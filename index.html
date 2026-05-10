@@ -84,7 +84,6 @@
   .about-tj { background: white; border-top: 1px solid var(--tj-line); border-bottom: 1px solid var(--tj-line); }
   .about-tj-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 60px; align-items: center; }
   @media (max-width: 860px) { .about-tj-grid { grid-template-columns: 1fr; gap: 40px; } }
-  /* CSS-built TJ graphic — always renders, no broken external image */
   .tj-graphic { position: relative; border-radius: var(--radius); overflow: hidden; aspect-ratio: 4/3; background: linear-gradient(180deg, #2a3d6b 0%, #1B2A4E 60%, #0f1a36 100%); box-shadow: 0 20px 50px rgba(27, 42, 78, 0.25); display: flex; align-items: flex-end; }
   .tj-graphic::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 60%; background: radial-gradient(ellipse at 70% 80%, rgba(232, 178, 59, 0.35), transparent 60%), radial-gradient(ellipse at 20% 100%, rgba(200, 16, 46, 0.25), transparent 55%); }
   .tj-graphic::after { content: ""; position: absolute; bottom: 0; left: 0; right: 0; height: 55%; background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.3) 100%), repeating-linear-gradient(90deg, transparent 0px, transparent 38px, rgba(232,178,59,0.7) 38px, rgba(232,178,59,0.7) 42px, transparent 42px, transparent 80px), linear-gradient(180deg, #0a1428 0%, #050a18 100%); clip-path: polygon(0% 100%, 0% 45%, 8% 45%, 8% 25%, 22% 25%, 22% 45%, 35% 45%, 35% 15%, 65% 15%, 65% 45%, 78% 45%, 78% 25%, 92% 25%, 92% 45%, 100% 45%, 100% 100%); }
@@ -170,8 +169,15 @@
   .pricing-card .btn { width: 100%; justify-content: center; margin-top: auto; }
   .returner-note { font-size: 0.8rem; color: var(--tj-ink-soft); font-style: italic; margin-top: 12px; text-align: center; background: var(--tj-cream); padding: 8px 12px; border-radius: 8px; border: 1px dashed var(--tj-line); }
 
-  /* PAYMENT */
+  /* PAYMENT / ENROLL */
   .payment { background: white; border-top: 1px solid var(--tj-line); }
+  .signup-cta-box { max-width: 720px; margin: 0 auto 30px; background: linear-gradient(135deg, var(--tj-red), var(--tj-red-deep)); color: white; padding: 36px; border-radius: var(--radius); text-align: center; box-shadow: 0 20px 40px rgba(200, 16, 46, 0.22); }
+  .signup-cta-box h3 { font-family: var(--font-display); font-weight: 800; font-size: 1.5rem; margin-bottom: 8px; color: white; }
+  .signup-cta-box p { color: rgba(255,255,255,0.9); margin-bottom: 20px; font-size: 0.98rem; }
+  .signup-cta-box .btn { background: white; color: var(--tj-red); font-size: 1.05rem; padding: 16px 32px; }
+  .signup-cta-box .btn:hover { background: var(--tj-cream); color: var(--tj-red-deep); }
+  .step-divider { max-width: 720px; margin: 0 auto 30px; text-align: center; color: var(--tj-ink-soft); font-size: 0.85rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; position: relative; }
+  .step-divider::before, .step-divider::after { content: ""; display: inline-block; width: 80px; height: 1px; background: var(--tj-line); vertical-align: middle; margin: 0 16px; }
   .payment-box { max-width: 720px; margin: 0 auto; background: var(--tj-cream); border: 2px dashed var(--tj-red); padding: 40px; border-radius: var(--radius); text-align: center; }
   .payment-box h3 { font-family: var(--font-display); font-weight: 800; font-size: 1.6rem; margin-bottom: 12px; color: var(--tj-red-deep); }
   .payment-box p { color: var(--tj-ink-soft); margin-bottom: 18px; }
@@ -228,7 +234,7 @@
       <a href="#brothers">Your Tutors</a>
       <a href="#course">The Course</a>
       <a href="#pricing">Pricing</a>
-      <a href="#enroll" class="nav-cta">Enroll Now</a>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLScmIcqq5hySFBag7DehgIW5nBjbOXDx-warS8GA5MFe7ykb8w/viewform" target="_blank" rel="noopener" class="nav-cta">Sign Up</a>
     </div>
   </div>
 </nav>
@@ -427,7 +433,7 @@
           <li>Roadmap of what to focus on each grade</li>
           <li>Direct Q&amp;A access with both tutors</li>
         </ul>
-        <a href="#enroll" class="btn btn-secondary">Reserve a Spot →</a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLScmIcqq5hySFBag7DehgIW5nBjbOXDx-warS8GA5MFe7ykb8w/viewform" target="_blank" rel="noopener" class="btn btn-primary">Sign Up →</a>
         <div class="returner-note">💡 Coming back for the 8th grade course later? Mention it — returning students get priority enrollment.</div>
       </div>
 
@@ -451,7 +457,7 @@
           <li>Direct Q&amp;A access between classes</li>
           <li>Taught by two recent TJ students</li>
         </ul>
-        <a href="#enroll" class="btn btn-primary">Reserve Your Spot →</a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLScmIcqq5hySFBag7DehgIW5nBjbOXDx-warS8GA5MFe7ykb8w/viewform" target="_blank" rel="noopener" class="btn btn-primary">Sign Up →</a>
       </div>
 
       <!-- TIER 3: The Final Showdown -->
@@ -473,7 +479,7 @@
           <li>Last-minute strategy &amp; question review</li>
           <li>Direct Q&amp;A access through test day</li>
         </ul>
-        <a href="#enroll" class="btn btn-secondary">Lock In Your Spot →</a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLScmIcqq5hySFBag7DehgIW5nBjbOXDx-warS8GA5MFe7ykb8w/viewform" target="_blank" rel="noopener" class="btn btn-primary">Sign Up →</a>
       </div>
 
     </div>
@@ -486,11 +492,22 @@
     <div class="section-eyebrow" style="text-align:center;">Enrollment</div>
     <h2 class="section-title" style="text-align:center; margin-left:auto; margin-right:auto;">How to enroll</h2>
     <p class="section-sub" style="text-align:center; margin-left:auto; margin-right:auto;">
-      To keep costs low for families, we accept payment via Zelle — no platform fees, no extra charges.
+      Two quick steps: sign up via the form, then send payment via Zelle. No platform fees, no extra charges.
     </p>
+
+    <!-- STEP 1: Google Form -->
+    <div class="signup-cta-box">
+      <h3>📝 Step 1: Sign up via Google Form</h3>
+      <p>Tell us your student's name, grade, and which course you're enrolling in.</p>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLScmIcqq5hySFBag7DehgIW5nBjbOXDx-warS8GA5MFe7ykb8w/viewform" target="_blank" rel="noopener" class="btn btn-primary">Open Sign-Up Form →</a>
+    </div>
+
+    <div class="step-divider">Then</div>
+
+    <!-- STEP 2: Zelle Payment -->
     <div class="payment-box">
-      <h3>💸 Pay via Zelle</h3>
-      <p>Send the enrollment fee for your chosen course to the Zelle account below, then email us your student's name so we can confirm the spot.</p>
+      <h3>💸 Step 2: Pay via Zelle</h3>
+      <p>Send the enrollment fee for your chosen course to the Zelle account below.</p>
       <div class="payment-info">
         <div><span class="label">Zelle Phone:</span><span class="val">703-930-3774</span></div>
         <div><span class="label">Recipient name:</span><span class="val">Nathan Wang</span></div>
@@ -498,7 +515,7 @@
         <div><span class="label">Amount:</span><span class="val">$200 / $400 / $150</span></div>
       </div>
       <p style="margin-top: 22px; font-size: 0.92rem;">
-        After sending, email us at <strong>wyattnie0827@gmail.com</strong> or <strong>nathanwang0817@gmail.com</strong> with the student's name, grade, and which course you enrolled in. We'll confirm your spot and send the first class details within 24 hours.
+        Once both steps are done, we'll confirm your spot and send the first class details within 24 hours. Questions? Email us at <strong>wyattnie0827@gmail.com</strong> or <strong>nathanwang0817@gmail.com</strong>.
       </p>
     </div>
   </div>
@@ -539,7 +556,7 @@
       </details>
       <details>
         <summary>How do I know my spot is confirmed?</summary>
-        <div>Once we receive your Zelle payment and your enrollment email, we'll reply within 24 hours confirming the spot and sharing the first class link.</div>
+        <div>Once we receive your Google Form sign-up and Zelle payment, we'll reply within 24 hours confirming the spot and sharing the first class link.</div>
       </details>
     </div>
   </div>
@@ -550,7 +567,7 @@
   <div class="final-cta-inner container">
     <h2>Three courses. One destination: TJ.</h2>
     <p>Whatever grade your student is in, we've got the right course to help them get there — taught by two brothers who recently lived it.</p>
-    <a href="#pricing" class="btn btn-primary">See All Courses</a>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLScmIcqq5hySFBag7DehgIW5nBjbOXDx-warS8GA5MFe7ykb8w/viewform" target="_blank" rel="noopener" class="btn btn-primary">Sign Up Now</a>
   </div>
 </section>
 
