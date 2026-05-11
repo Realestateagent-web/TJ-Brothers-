@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TJ Brothers — Prep for Thomas Jefferson High School · Flyer</title>
+<meta name="description" content="Scan or tap the QR to visit www.tj-brothers.com — focused prep for the TJ admissions test, taught by two brothers who took it." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800;9..144,900&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #C8102E;
+    --red-deep: #8B0A1F;
+    --navy: #1B2A4E;
+    --gold: #E8B23B;
+    --cream: #FBF7F0;
+    --ink: #1A1413;
+    --ink-soft: #4A4140;
+    --line: #E8DFD3;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #efe9dd; }
+  body {
+    font-family: 'Manrope', system-ui, sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    padding: 28px 16px 60px;
+    min-height: 100vh;
+  }
+
+  /* Controls bar */
+  .controls {
+    max-width: 820px; margin: 0 auto 18px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.88rem;
+  }
+  .controls a, .controls button {
+    background: white; color: var(--ink); border: 1px solid var(--line);
+    padding: 8px 16px; border-radius: 999px; font-weight: 600;
+    text-decoration: none; cursor: pointer; font-family: inherit; font-size: inherit;
+  }
+  .controls button:hover, .controls a:hover { border-color: var(--ink); }
+
+  /* Flyer canvas — sized roughly like a printable page */
+  .flyer {
+    max-width: 820px;
+    margin: 0 auto;
+    background: var(--cream);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 30px 60px rgba(27, 42, 78, 0.18), 0 6px 18px rgba(0,0,0,0.06);
+    position: relative;
+  }
+  .flyer::before {
+    content: ""; position: absolute; top: -140px; right: -140px;
+    width: 380px; height: 380px; border-radius: 50%;
+    background: var(--red); opacity: 0.08; z-index: 0;
+  }
+  .flyer::after {
+    content: ""; position: absolute; bottom: -160px; left: -160px;
+    width: 420px; height: 420px; border-radius: 50%;
+    background: var(--gold); opacity: 0.10; z-index: 0;
+  }
+  .flyer-inner { position: relative; z-index: 1; padding: 52px 56px 44px; }
+
+  /* Header */
+  .head {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 36px;
+  }
+  .brand-mark {
+    width: 52px; height: 52px; background: var(--red); color: white;
+    border-radius: 10px; display: grid; place-items: center;
+    font-family: 'Fraunces', Georgia, serif; font-weight: 900; font-size: 1.4rem;
+    box-shadow: 0 6px 16px rgba(200, 16, 46, 0.35);
+  }
+  .brand-name { font-family: 'Fraunces', Georgia, serif; font-weight: 900; font-size: 1.5rem; letter-spacing: -0.01em; }
+  .brand-sub { font-size: 0.78rem; color: var(--ink-soft); font-weight: 500; }
+
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: white; border: 1px solid var(--line);
+    padding: 6px 14px; border-radius: 999px;
+    font-size: 0.74rem; font-weight: 700; letter-spacing: 0.06em;
+    color: var(--red-deep); margin-bottom: 18px;
+  }
+  .eyebrow .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--red); }
+
+  h1 {
+    font-family: 'Fraunces', Georgia, serif; font-weight: 900;
+    font-size: clamp(2rem, 5.5vw, 3.2rem); line-height: 1.04;
+    letter-spacing: -0.02em; margin-bottom: 18px;
+  }
+  h1 .accent { color: var(--red); font-style: italic; }
+  h1 .underline { position: relative; display: inline-block; }
+  h1 .underline::after {
+    content: ""; position: absolute; bottom: 0.06em; left: 0; right: 0;
+    height: 0.2em; background: var(--gold); opacity: 0.6; z-index: -1;
+  }
+
+  .lede { font-size: 1.02rem; color: var(--ink-soft); max-width: 560px; margin-bottom: 22px; }
+
+  .points { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 26px; margin-bottom: 30px; }
+  .points li { list-style: none; font-size: 0.92rem; color: var(--ink); display: flex; gap: 9px; align-items: flex-start; }
+  .points li::before {
+    content: ""; width: 8px; height: 8px; background: var(--red);
+    border-radius: 50%; margin-top: 7px; flex-shrink: 0;
+  }
+
+  /* QR block — pressable */
+  .qr-row {
+    display: grid; grid-template-columns: auto 1fr; gap: 28px;
+    align-items: center;
+    padding: 22px; background: white; border-radius: 16px;
+    border: 1px solid var(--line);
+    box-shadow: 0 10px 24px rgba(27, 42, 78, 0.06);
+  }
+  @media (max-width: 560px) {
+    .qr-row { grid-template-columns: 1fr; text-align: center; }
+    .qr-cta { justify-self: center; }
+  }
+  .qr-link {
+    display: block; padding: 14px; background: white;
+    border: 2px solid var(--ink); border-radius: 14px;
+    transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+    line-height: 0; /* remove extra space under canvas */
+  }
+  .qr-link:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(200, 16, 46, 0.2); border-color: var(--red); }
+  .qr-link:active { transform: translateY(0); }
+  .qr-link canvas, .qr-link img { display: block; width: 220px; height: 220px; }
+  .qr-cta { display: flex; flex-direction: column; gap: 6px; }
+  .qr-cta .label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.16em; color: var(--red); text-transform: uppercase; }
+  .qr-cta .title { font-family: 'Fraunces', Georgia, serif; font-weight: 800; font-size: 1.4rem; letter-spacing: -0.01em; line-height: 1.1; }
+  .qr-cta .url { font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 1.05rem; color: var(--ink); margin-top: 4px; }
+  .qr-cta .hint { font-size: 0.85rem; color: var(--ink-soft); margin-top: 4px; }
+
+  .foot {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 26px; padding-top: 18px;
+    border-top: 1px dashed var(--line);
+    font-size: 0.78rem; color: var(--ink-soft);
+  }
+  .foot .stamp {
+    font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 0.85rem;
+    color: var(--navy);
+  }
+
+  /* Print */
+  @page { size: Letter portrait; margin: 0.4in; }
+  @media print {
+    body { background: white; padding: 0; }
+    .controls { display: none; }
+    .flyer { box-shadow: none; border-radius: 0; max-width: 100%; }
+    .flyer::before, .flyer::after { display: none; }
+    .qr-link { border-color: black; box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="controls">
+  <a href="./index.html">← All flyers</a>
+  <button type="button" onclick="window.print()">Print this flyer</button>
+</div>
+
+<main class="flyer">
+  <div class="flyer-inner">
+    <div class="head">
+      <div class="brand-mark">TJ</div>
+      <div>
+        <div class="brand-name">The TJ Brothers</div>
+        <div class="brand-sub">Prep for Thomas Jefferson High School · TJHSST</div>
+      </div>
+    </div>
+
+    <span class="eyebrow"><span class="dot"></span> 2026 Cohorts — Now Enrolling</span>
+
+    <h1>
+      Get into <span class="accent">TJ.</span><br>
+      Taught by <span class="underline">two brothers</span><br>who actually did it.
+    </h1>
+
+    <p class="lede">
+      Focused prep courses for the Thomas Jefferson High School admissions test — designed and taught by two recent TJ students who took the exam themselves and remember exactly what works.
+    </p>
+
+    <ul class="points">
+      <li>Built around the real 2026 test format</li>
+      <li>Math, reading, and problem-solving essay coaching</li>
+      <li>Small cohorts. Personal feedback. Real strategy.</li>
+      <li>Taught by current TJ students, not textbook tutors</li>
+    </ul>
+
+    <a class="qr-row" href="https://www.tj-brothers.com" target="_blank" rel="noopener" aria-label="Visit www.tj-brothers.com">
+      <span class="qr-link" id="qr-link">
+        <div id="qrcode" aria-hidden="true"></div>
+        <noscript>
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=440x440&margin=0&data=https%3A%2F%2Fwww.tj-brothers.com" alt="QR code linking to www.tj-brothers.com" />
+        </noscript>
+      </span>
+      <span class="qr-cta">
+        <span class="label">Scan or tap</span>
+        <span class="title">Sign up, see pricing, meet the brothers.</span>
+        <span class="url">www.tj-brothers.com</span>
+        <span class="hint">Point your phone camera at the code, or tap the code if you're already on a screen.</span>
+      </span>
+    </a>
+
+    <div class="foot">
+      <div class="stamp">TJ Brothers · Alexandria, VA</div>
+      <div>The #1 public high school in the U.S. starts with the right prep.</div>
+    </div>
+  </div>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+  (function () {
+    var url = 'https://www.tj-brothers.com';
+    var el = document.getElementById('qrcode');
+    if (window.QRCode && el) {
+      new QRCode(el, {
+        text: url,
+        width: 220,
+        height: 220,
+        colorDark: '#1A1413',
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.H
+      });
+    } else if (el) {
+      var img = document.createElement('img');
+      img.src = 'https://api.qrserver.com/v1/create-qr-code/?size=440x440&margin=0&data=' + encodeURIComponent(url);
+      img.alt = 'QR code linking to www.tj-brothers.com';
+      el.appendChild(img);
+    }
+  })();
+</script>
+
+</body>
+</html>
