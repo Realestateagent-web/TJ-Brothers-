@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TJ Brothers — Square Flyer · 1080×1080</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800;9..144,900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --tj-red: #C8102E;
+    --tj-red-deep: #8B0A1F;
+    --tj-red-soft: #FBE9EC;
+    --tj-navy: #1B2A4E;
+    --tj-gold: #E8B23B;
+    --tj-cream: #FBF7F0;
+    --tj-ink: #1A1413;
+    --tj-ink-soft: #4A4140;
+    --tj-line: #E8DFD3;
+    --font-display: 'Fraunces', Georgia, 'Noto Serif CJK SC', serif;
+    --font-body: 'Manrope', 'Noto Sans CJK SC', system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--font-body);
+    color: var(--tj-ink);
+    background: #d9d2c5;
+    line-height: 1.4;
+    -webkit-font-smoothing: antialiased;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+  }
+  a { color: inherit; text-decoration: none; }
+  img { display: block; max-width: 100%; }
+
+  .flyer {
+    width: 1080px;
+    height: 1080px;
+    background: var(--tj-cream);
+    position: relative;
+    overflow: hidden;
+  }
+  .flyer::before {
+    content: ""; position: absolute; top: -120px; right: -120px;
+    width: 420px; height: 420px;
+    background: var(--tj-red); border-radius: 50%; opacity: 0.08;
+  }
+  .flyer::after {
+    content: ""; position: absolute; bottom: -150px; left: -150px;
+    width: 460px; height: 460px;
+    background: var(--tj-gold); border-radius: 50%; opacity: 0.12;
+  }
+  .flyer-inner { position: relative; z-index: 1; padding: 40px 48px; height: 100%; display: flex; flex-direction: column; }
+
+  .header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
+  .brand { display: flex; align-items: center; gap: 12px; font-family: var(--font-display); font-weight: 900; font-size: 1.3rem; letter-spacing: -0.02em; }
+  .brand-mark { width: 40px; height: 40px; background: var(--tj-red); color: white; border-radius: 9px; display: grid; place-items: center; font-family: var(--font-display); font-weight: 900; font-size: 1rem; box-shadow: 0 6px 14px rgba(200, 16, 46, 0.35); }
+  .eyebrow { display: inline-flex; align-items: center; gap: 8px; background: white; border: 1px solid var(--tj-line); padding: 7px 13px; border-radius: 999px; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em; color: var(--tj-red-deep); }
+  .eyebrow .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--tj-red); }
+
+  .hero-title { font-family: var(--font-display); font-weight: 900; font-size: 2.6rem; line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 10px; }
+  .hero-title .accent { color: var(--tj-red); font-style: italic; }
+  .hero-title .underline { position: relative; display: inline-block; }
+  .hero-title .underline::after { content: ""; position: absolute; bottom: 0.05em; left: 0; right: 0; height: 0.20em; background: var(--tj-gold); z-index: -1; opacity: 0.7; }
+  .lede { font-size: 0.95rem; color: var(--tj-ink-soft); margin-bottom: 18px; max-width: 920px; }
+
+  .section-eyebrow { color: var(--tj-red); font-weight: 700; font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 6px; text-align: center; }
+  .section-title-sm { font-family: var(--font-display); font-weight: 800; font-size: 1.4rem; line-height: 1.15; text-align: center; margin-bottom: 14px; }
+
+  .pricing-grid { display: flex; gap: 12px; margin-bottom: 18px; align-items: stretch; }
+  .pricing-grid .tier { flex: 1 1 0; min-width: 0; background: white; border-radius: 12px; padding: 14px 13px; border: 1px solid var(--tj-line); position: relative; overflow: hidden; display: flex; flex-direction: column; }
+  .tier::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--tj-line); }
+  .tier-1::before { background: linear-gradient(90deg, var(--tj-gold), #d4a02e); }
+  .tier-2::before { background: linear-gradient(90deg, var(--tj-red), var(--tj-gold), var(--tj-red)); }
+  .tier-3::before { background: linear-gradient(90deg, var(--tj-navy), var(--tj-red)); }
+  .tier.featured { border: 2px solid var(--tj-red); box-shadow: 0 14px 26px rgba(200, 16, 46, 0.16); }
+  .tier-badge { display: inline-block; background: var(--tj-cream); color: var(--tj-ink-soft); padding: 3px 8px; border-radius: 999px; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px; }
+  .tier.featured .tier-badge { background: var(--tj-gold); color: var(--tj-ink); }
+  .tier-3 .tier-badge { background: var(--tj-navy); color: white; }
+  .tier h4 { font-family: var(--font-display); font-weight: 800; font-size: 0.98rem; line-height: 1.15; margin-bottom: 2px; }
+  .tier .grade { color: var(--tj-red); font-weight: 600; font-size: 0.7rem; margin-bottom: 6px; }
+  .tier .price { display: flex; align-items: baseline; gap: 2px; }
+  .tier .price .d { font-family: var(--font-display); font-weight: 800; font-size: 0.95rem; color: var(--tj-red); }
+  .tier .price .a { font-family: var(--font-display); font-weight: 900; font-size: 1.7rem; color: var(--tj-red); line-height: 1; letter-spacing: -0.03em; }
+  .tier .price .p { color: var(--tj-ink-soft); font-size: 0.66rem; margin-left: 3px; }
+
+  .qr-section { background: white; border: 1px solid var(--tj-line); border-radius: 14px; padding: 18px 22px; margin-bottom: 14px; flex: 1; display: flex; flex-direction: column; }
+  .qr-grid { display: flex; gap: 16px; flex: 1; }
+  .qr-grid .qr-card { flex: 1 1 0; min-width: 0; border: 2px dashed var(--tj-line); border-radius: 12px; padding: 14px 12px; text-align: center; display: block; color: inherit; }
+  .qr-card .qr-img { width: 180px; height: 180px; margin: 0 auto 10px; background: white; padding: 8px; border-radius: 10px; border: 1px solid var(--tj-line); }
+  .qr-card .qr-img img { width: 100%; height: 100%; }
+  .qr-step { display: inline-block; background: var(--tj-red); color: white; font-weight: 700; font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; margin-bottom: 8px; }
+  .qr-card.signup .qr-step { background: var(--tj-navy); }
+  .qr-card h4 { font-family: var(--font-display); font-weight: 800; font-size: 1.05rem; margin-bottom: 2px; }
+  .qr-card p { font-size: 0.78rem; color: var(--tj-ink-soft); margin-bottom: 8px; }
+  .qr-card .cta { display: inline-flex; align-items: center; gap: 6px; background: var(--tj-red); color: white; padding: 7px 14px; border-radius: 999px; font-weight: 700; font-size: 0.78rem; }
+  .qr-card.signup .cta { background: var(--tj-navy); }
+  .qr-hint { text-align: center; margin-top: 10px; font-size: 0.74rem; color: var(--tj-ink-soft); }
+  .qr-hint strong { color: var(--tj-ink); }
+
+  .foot { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; font-size: 0.72rem; color: var(--tj-ink-soft); }
+  .foot .site { font-family: var(--font-display); font-weight: 800; color: var(--tj-red); font-size: 0.86rem; }
+  .foot .contact { text-align: right; }
+  .foot .small { font-size: 0.66rem; opacity: 0.7; margin-top: 3px; }
+</style>
+</head>
+<body>
+
+<div class="flyer">
+  <div class="flyer-inner">
+
+    <div class="header">
+      <a href="https://www.tj-brothers.com/" target="_blank" rel="noopener" class="brand">
+        <span class="brand-mark">TJ</span>
+        <span>The TJ Brothers</span>
+      </a>
+      <span class="eyebrow"><span class="dot"></span> 2026 Cohorts — Now Enrolling</span>
+    </div>
+
+    <h1 class="hero-title">
+      Get Into <span class="accent">TJ.</span><br>
+      Taught by <span class="underline">two brothers</span> who actually did it.
+    </h1>
+    <p class="lede">
+      Focused prep for the Thomas Jefferson High School admissions test — designed and taught by two recent TJ students who took it themselves and remember exactly what works.
+    </p>
+
+    <div class="section-eyebrow">Pricing &amp; Courses</div>
+    <h2 class="section-title-sm">Three courses. One goal: get into TJ.</h2>
+    <div class="pricing-grid">
+      <div class="tier tier-1">
+        <span class="tier-badge">7th &amp; below</span>
+        <h4>Starting Your TJ Journey</h4>
+        <div class="grade">Early prep · Foundation</div>
+        <div class="price"><span class="d">$</span><span class="a">200</span><span class="p">/ student</span></div>
+      </div>
+      <div class="tier tier-2 featured">
+        <span class="tier-badge">⭐ Most popular · Rising 8th</span>
+        <h4>Locking In on TJ</h4>
+        <div class="grade">Summer cohort · Deep dive</div>
+        <div class="price"><span class="d">$</span><span class="a">400</span><span class="p">/ student</span></div>
+      </div>
+      <div class="tier tier-3">
+        <span class="tier-badge">Late Nov · 8th only</span>
+        <h4>The Final Showdown</h4>
+        <div class="grade">Pre-test sprint · 6 sessions</div>
+        <div class="price"><span class="d">$</span><span class="a">150</span><span class="p">/ student</span></div>
+      </div>
+    </div>
+
+    <div class="qr-section">
+      <div class="section-eyebrow">Tap or scan</div>
+      <h2 class="section-title-sm">Visit the site · Sign up in 2 minutes</h2>
+      <div class="qr-grid">
+        <a class="qr-card visit" href="https://www.tj-brothers.com/" target="_blank" rel="noopener">
+          <span class="qr-step">Step 1 · Learn more</span>
+          <div class="qr-img"><img src="qr-website.png" alt="QR to tj-brothers.com" /></div>
+          <h4>Visit the Website</h4>
+          <p>tj-brothers.com</p>
+          <span class="cta">Open Website →</span>
+        </a>
+        <a class="qr-card signup" href="https://docs.google.com/forms/d/e/1FAIpQLScmIcqq5hySFBag7DehgIW5nBjbOXDx-warS8GA5MFe7ykb8w/viewform" target="_blank" rel="noopener">
+          <span class="qr-step">Step 2 · Enroll</span>
+          <div class="qr-img"><img src="qr-signup.png" alt="QR to sign-up form" /></div>
+          <h4>Sign Up Now</h4>
+          <p>Google Form — name, grade, course</p>
+          <span class="cta">Open Sign-Up Form →</span>
+        </a>
+      </div>
+      <p class="qr-hint">
+        <strong>On phone?</strong> Tap a code. <strong>On desktop?</strong> Scan it.
+        After signup, pay via <strong>Zelle</strong> to <strong>703-930-3774</strong> (Nathan Wang).
+      </p>
+    </div>
+
+    <div class="foot">
+      <div>
+        <div class="site">tj-brothers.com</div>
+        <div class="small">© 2026 The TJ Brothers · Not affiliated with TJHSST or FCPS.</div>
+      </div>
+      <div class="contact">
+        wyattnie0827@gmail.com · nathanwang0817@gmail.com
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

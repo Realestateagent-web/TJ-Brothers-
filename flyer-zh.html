@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TJ Brothers — 飞机海报 · 托马斯·杰斐逊高中备考</title>
+<meta name="description" content="TJ Brothers 分享海报——两位 TJ 在读学生亲授 TJ 入学考试备考。点击或扫码即可访问网站或报名。" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800;9..144,900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --tj-red: #C8102E;
+    --tj-red-deep: #8B0A1F;
+    --tj-red-soft: #FBE9EC;
+    --tj-navy: #1B2A4E;
+    --tj-gold: #E8B23B;
+    --tj-cream: #FBF7F0;
+    --tj-ink: #1A1413;
+    --tj-ink-soft: #4A4140;
+    --tj-line: #E8DFD3;
+    --font-display: 'Fraunces', Georgia, 'Noto Serif CJK SC', 'Source Han Serif SC', serif;
+    --font-body: 'Manrope', 'Noto Sans CJK SC', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--font-body);
+    color: var(--tj-ink);
+    background: #d9d2c5;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    padding: 24px 16px;
+    display: flex;
+    justify-content: center;
+  }
+  a { color: inherit; text-decoration: none; }
+  img { display: block; max-width: 100%; }
+
+  .flyer {
+    width: 100%;
+    max-width: 1080px;
+    background: var(--tj-cream);
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 30px 70px rgba(27, 42, 78, 0.25);
+    position: relative;
+  }
+  .flyer::before {
+    content: ""; position: absolute; top: -140px; right: -140px;
+    width: 460px; height: 460px;
+    background: var(--tj-red); border-radius: 50%; opacity: 0.08; z-index: 0;
+  }
+  .flyer::after {
+    content: ""; position: absolute; bottom: -180px; left: -180px;
+    width: 500px; height: 500px;
+    background: var(--tj-gold); border-radius: 50%; opacity: 0.12; z-index: 0;
+  }
+  .flyer-inner { position: relative; z-index: 1; padding: 44px 52px 36px; }
+
+  .header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 26px; }
+  .brand { display: flex; align-items: center; gap: 12px; font-family: var(--font-display); font-weight: 900; font-size: 1.4rem; letter-spacing: -0.02em; }
+  .brand-mark { width: 44px; height: 44px; background: var(--tj-red); color: white; border-radius: 10px; display: grid; place-items: center; font-family: var(--font-display); font-weight: 900; font-size: 1.05rem; box-shadow: 0 6px 14px rgba(200, 16, 46, 0.35); }
+  .eyebrow { display: inline-flex; align-items: center; gap: 8px; background: white; border: 1px solid var(--tj-line); padding: 8px 14px; border-radius: 999px; font-size: 0.82rem; font-weight: 700; letter-spacing: 0.04em; color: var(--tj-red-deep); }
+  .eyebrow .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--tj-red); }
+
+  .hero-title { font-family: var(--font-display); font-weight: 900; font-size: clamp(2rem, 4.2vw, 3.2rem); line-height: 1.15; letter-spacing: -0.01em; margin-bottom: 14px; }
+  .hero-title .accent { color: var(--tj-red); font-style: italic; }
+  .hero-title .underline { position: relative; display: inline-block; }
+  .hero-title .underline::after { content: ""; position: absolute; bottom: 0.05em; left: 0; right: 0; height: 0.20em; background: var(--tj-gold); z-index: -1; opacity: 0.7; }
+  .lede { font-size: clamp(1rem, 1.3vw, 1.1rem); color: var(--tj-ink-soft); margin-bottom: 24px; max-width: 760px; }
+
+  .stats { display: flex; gap: 14px; margin-bottom: 28px; }
+  .stats .stat { flex: 1 1 0; min-width: 0; background: white; border: 1px solid var(--tj-line); border-radius: 12px; padding: 14px 12px; text-align: center; }
+  .stat .num { font-family: var(--font-display); font-weight: 900; font-size: 1.6rem; color: var(--tj-red); line-height: 1; margin-bottom: 4px; }
+  .stat .label { font-size: 0.78rem; color: var(--tj-ink-soft); font-weight: 600; line-height: 1.3; }
+
+  .what-row { display: flex; gap: 12px; margin-bottom: 28px; }
+  .what-row .what-item { flex: 1 1 0; min-width: 0; background: white; border: 1px solid var(--tj-line); border-radius: 12px; padding: 14px 12px; text-align: center; }
+  .what-item .ico { font-size: 1.4rem; margin-bottom: 6px; }
+  .what-item .t { font-family: var(--font-display); font-weight: 700; font-size: 0.98rem; color: var(--tj-ink); }
+  .what-item .s { font-size: 0.78rem; color: var(--tj-ink-soft); margin-top: 2px; }
+
+  .section-eyebrow { color: var(--tj-red); font-weight: 700; font-size: 0.8rem; letter-spacing: 0.14em; margin-bottom: 8px; text-align: center; }
+  .section-title { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.5rem, 2.6vw, 2rem); letter-spacing: -0.01em; line-height: 1.2; text-align: center; margin-bottom: 20px; }
+
+  .pricing-grid { display: flex; gap: 14px; margin-bottom: 32px; align-items: stretch; }
+  .pricing-grid .tier { flex: 1 1 0; min-width: 0; background: white; border-radius: 14px; padding: 18px 16px; border: 1px solid var(--tj-line); position: relative; overflow: hidden; display: flex; flex-direction: column; }
+  .tier::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--tj-line); }
+  .tier-1::before { background: linear-gradient(90deg, var(--tj-gold), #d4a02e); }
+  .tier-2::before { background: linear-gradient(90deg, var(--tj-red), var(--tj-gold), var(--tj-red)); }
+  .tier-3::before { background: linear-gradient(90deg, var(--tj-navy), var(--tj-red)); }
+  .tier.featured { border: 2px solid var(--tj-red); box-shadow: 0 18px 36px rgba(200, 16, 46, 0.16); }
+  .tier-badge { display: inline-block; background: var(--tj-cream); color: var(--tj-ink-soft); padding: 3px 9px; border-radius: 999px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.04em; margin-bottom: 10px; }
+  .tier.featured .tier-badge { background: var(--tj-gold); color: var(--tj-ink); }
+  .tier-3 .tier-badge { background: var(--tj-navy); color: white; }
+  .tier h4 { font-family: var(--font-display); font-weight: 800; font-size: 1.1rem; line-height: 1.25; margin-bottom: 4px; }
+  .tier .grade { color: var(--tj-red); font-weight: 600; font-size: 0.78rem; margin-bottom: 10px; }
+  .tier .price { display: flex; align-items: baseline; gap: 2px; margin-bottom: 8px; }
+  .tier .price .d { font-family: var(--font-display); font-weight: 800; font-size: 1rem; color: var(--tj-red); }
+  .tier .price .a { font-family: var(--font-display); font-weight: 900; font-size: 1.9rem; color: var(--tj-red); line-height: 1; letter-spacing: -0.03em; }
+  .tier .price .p { color: var(--tj-ink-soft); font-size: 0.78rem; margin-left: 4px; }
+  .tier p.desc { font-size: 0.82rem; color: var(--tj-ink-soft); line-height: 1.5; }
+
+  .tutors { background: linear-gradient(135deg, var(--tj-navy), #2a3d6b); color: white; border-radius: 14px; padding: 18px 22px; margin-bottom: 32px; display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+  .tutors .left { display: flex; align-items: center; gap: 10px; }
+  .ava { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, var(--tj-red), var(--tj-red-deep)); color: white; display: grid; place-items: center; font-family: var(--font-display); font-weight: 800; font-size: 0.95rem; box-shadow: 0 4px 10px rgba(200, 16, 46, 0.4); letter-spacing: 0.03em; border: 2px solid white; }
+  .ava.b { margin-left: -18px; }
+  .tutors .copy { flex: 1; min-width: 260px; }
+  .tutors .copy strong { font-family: var(--font-display); font-weight: 800; font-size: 1.05rem; display: block; margin-bottom: 2px; }
+  .tutors .copy span { font-size: 0.9rem; color: rgba(255,255,255,0.82); }
+
+  .qr-section { background: white; border: 1px solid var(--tj-line); border-radius: 16px; padding: 26px 24px; margin-bottom: 24px; }
+  .qr-grid { display: flex; gap: 18px; }
+  .qr-grid .qr-card { flex: 1 1 0; min-width: 0; border: 2px dashed var(--tj-line); border-radius: 14px; padding: 20px 16px; text-align: center; display: block; color: inherit; }
+  .qr-card .qr-img { width: 200px; height: 200px; margin: 0 auto 14px; background: white; padding: 10px; border-radius: 10px; border: 1px solid var(--tj-line); }
+  .qr-card .qr-img img { width: 100%; height: 100%; }
+  .qr-step { display: inline-block; background: var(--tj-red); color: white; font-weight: 700; font-size: 0.74rem; letter-spacing: 0.04em; padding: 4px 10px; border-radius: 999px; margin-bottom: 10px; }
+  .qr-card.signup .qr-step { background: var(--tj-navy); }
+  .qr-card h4 { font-family: var(--font-display); font-weight: 800; font-size: 1.18rem; margin-bottom: 4px; }
+  .qr-card p { font-size: 0.86rem; color: var(--tj-ink-soft); margin-bottom: 12px; }
+  .qr-card .cta { display: inline-flex; align-items: center; gap: 6px; background: var(--tj-red); color: white; padding: 9px 18px; border-radius: 999px; font-weight: 700; font-size: 0.88rem; }
+  .qr-card.signup .cta { background: var(--tj-navy); }
+  .qr-hint { text-align: center; margin-top: 18px; font-size: 0.86rem; color: var(--tj-ink-soft); }
+  .qr-hint strong { color: var(--tj-ink); }
+
+  .foot { border-top: 1px solid var(--tj-line); padding-top: 18px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; font-size: 0.82rem; color: var(--tj-ink-soft); }
+  .foot .site { font-family: var(--font-display); font-weight: 800; color: var(--tj-red); font-size: 0.95rem; }
+  .foot .contact { text-align: right; }
+  .foot .small { font-size: 0.72rem; color: var(--tj-ink-soft); opacity: 0.7; margin-top: 4px; }
+</style>
+</head>
+<body>
+
+<div class="flyer">
+  <div class="flyer-inner">
+
+    <div class="header">
+      <a href="https://www.tj-brothers.com/" target="_blank" rel="noopener" class="brand">
+        <span class="brand-mark">TJ</span>
+        <span>TJ Brothers · TJ 兄弟</span>
+      </a>
+      <span class="eyebrow"><span class="dot"></span> 2026 暑期班 · 现已开放报名</span>
+    </div>
+
+    <h1 class="hero-title">
+      助你考入 <span class="accent">TJ。</span><br>
+      由两位<span class="underline">亲身考上</span>的兄弟亲授。
+    </h1>
+    <p class="lede">
+      专为 <strong>托马斯·杰斐逊高中（TJHSST）</strong>入学考试设计的备考课程——由两位刚刚考入 TJ 的在读学生亲自设计并授课，深知哪些方法真正有效。
+    </p>
+
+    <div class="stats">
+      <div class="stat"><div class="num">#1</div><div class="label">全美第一公立高中</div></div>
+      <div class="stat"><div class="num">3</div><div class="label">套课程 · 覆盖各年级</div></div>
+      <div class="stat"><div class="num">7–8</div><div class="label">周暑期密训</div></div>
+      <div class="stat"><div class="num">2×</div><div class="label">每周直播课</div></div>
+    </div>
+
+    <div class="what-row">
+      <div class="what-item"><div class="ico">📐</div><div class="t">数学推理</div><div class="s">捷径、陷阱、套路</div></div>
+      <div class="what-item"><div class="ico">📖</div><div class="t">阅读与写作</div><div class="s">理解 + 语法</div></div>
+      <div class="what-item"><div class="ico">✍️</div><div class="t">SPSE 写作</div><div class="s">框架 + 实时点评</div></div>
+      <div class="what-item"><div class="ico">🎯</div><div class="t">模拟考试</div><div class="s">限时 + 详尽讲评</div></div>
+    </div>
+
+    <div class="tutors">
+      <div class="left">
+        <div class="ava">WN</div>
+        <div class="ava b">NW</div>
+      </div>
+      <div class="copy">
+        <strong>Wyatt Nie 与 Nathan Wang —— 联合创始人</strong>
+        <span>兄弟二人均在读于 TJ。Wyatt 今年刚考入 TJ；Nathan 已在 TJ 就读两年，SAT 新近考获 1540 分。</span>
+      </div>
+    </div>
+
+    <div class="section-eyebrow">课程与价格</div>
+    <h2 class="section-title">三套课程 · 同一目标：考入 TJ</h2>
+    <div class="pricing-grid">
+      <div class="tier tier-1">
+        <span class="tier-badge">7 年级及以下</span>
+        <h4>TJ 启程班</h4>
+        <div class="grade">提前备考 · 打牢基础</div>
+        <div class="price"><span class="d">$</span><span class="a">200</span><span class="p">/ 每位学生</span></div>
+        <p class="desc">TJ 入门介绍 + 自学计划，帮助低年级学生持续进步，直至考试年。</p>
+      </div>
+      <div class="tier tier-2 featured">
+        <span class="tier-badge">⭐ 最受欢迎 · 升 8 年级</span>
+        <h4>锁定 TJ 班</h4>
+        <div class="grade">暑期班 · 深度备考</div>
+        <div class="price"><span class="d">$</span><span class="a">400</span><span class="p">/ 每位学生</span></div>
+        <p class="desc">7–8 周内 14+ 节直播课。涵盖数学 + 阅读/写作 + SPSE + 模拟考试。</p>
+      </div>
+      <div class="tier tier-3">
+        <span class="tier-badge">11 月底 · 仅限 8 年级</span>
+        <h4>决战 TJ 班</h4>
+        <div class="grade">考前冲刺 · 共 6 节</div>
+        <div class="price"><span class="d">$</span><span class="a">150</span><span class="p">/ 每位学生</span></div>
+        <p class="desc">考前最后冲刺——节奏策略、加练一场模拟、重点回顾。</p>
+      </div>
+    </div>
+
+    <div class="qr-section">
+      <div class="section-eyebrow">点击或扫码</div>
+      <h2 class="section-title">访问网站 · 2 分钟在线报名</h2>
+      <div class="qr-grid">
+        <a class="qr-card visit"
+           href="https://www.tj-brothers.com/"
+           target="_blank" rel="noopener">
+          <span class="qr-step">第一步 · 了解详情</span>
+          <div class="qr-img"><img src="qr-website.png" alt="访问 tj-brothers.com 的二维码" /></div>
+          <h4>访问网站</h4>
+          <p>tj-brothers.com — 课程详情、常见问题、师资介绍</p>
+          <span class="cta">打开网站 →</span>
+        </a>
+        <a class="qr-card signup"
+           href="https://docs.google.com/forms/d/e/1FAIpQLScmIcqq5hySFBag7DehgIW5nBjbOXDx-warS8GA5MFe7ykb8w/viewform"
+           target="_blank" rel="noopener">
+          <span class="qr-step">第二步 · 报名</span>
+          <div class="qr-img"><img src="qr-signup.png" alt="打开 TJ Brothers 报名表的二维码" /></div>
+          <h4>立即报名</h4>
+          <p>Google 表单 — 填写学生姓名、年级、所选课程</p>
+          <span class="cta">打开报名表 →</span>
+        </a>
+      </div>
+      <p class="qr-hint">
+        <strong>手机端：</strong>点击二维码 · <strong>电脑端：</strong>用手机相机扫码。<br>
+        报名后请通过 <strong>Zelle</strong> 转账至 <strong>703-930-3774</strong>（收款人 Nathan Wang）。
+      </p>
+    </div>
+
+    <div class="foot">
+      <div>
+        <div class="site">tj-brothers.com</div>
+        <div class="small">© 2026 TJ Brothers · 与 TJHSST 及 FCPS 无关联。</div>
+      </div>
+      <div class="contact">
+        wyattnie0827@gmail.com<br>
+        nathanwang0817@gmail.com
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
