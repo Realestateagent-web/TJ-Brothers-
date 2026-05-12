@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TJ Brothers — Flyer · Prep for Thomas Jefferson High School</title>
+<meta name="description" content="Share-ready flyer for TJ Brothers — TJ admissions prep taught by two recent TJ students. Scan or tap to visit the site or sign up." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800;9..144,900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --tj-red: #C8102E;
+    --tj-red-deep: #8B0A1F;
+    --tj-red-soft: #FBE9EC;
+    --tj-navy: #1B2A4E;
+    --tj-gold: #E8B23B;
+    --tj-cream: #FBF7F0;
+    --tj-ink: #1A1413;
+    --tj-ink-soft: #4A4140;
+    --tj-line: #E8DFD3;
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body: 'Manrope', system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--font-body);
+    color: var(--tj-ink);
+    background: #d9d2c5;
+    line-height: 1.45;
+    -webkit-font-smoothing: antialiased;
+    padding: 24px 16px;
+    display: flex;
+    justify-content: center;
+  }
+  a { color: inherit; text-decoration: none; }
+  img { display: block; max-width: 100%; }
+
+  /* Flyer canvas — sized for social (≈ 1080 × 1350, 4:5) but responsive on phones */
+  .flyer {
+    width: 100%;
+    max-width: 1080px;
+    background: var(--tj-cream);
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 30px 70px rgba(27, 42, 78, 0.25);
+    position: relative;
+  }
+  .flyer::before {
+    content: "";
+    position: absolute;
+    top: -140px; right: -140px;
+    width: 460px; height: 460px;
+    background: var(--tj-red);
+    border-radius: 50%;
+    opacity: 0.08;
+    z-index: 0;
+  }
+  .flyer::after {
+    content: "";
+    position: absolute;
+    bottom: -180px; left: -180px;
+    width: 500px; height: 500px;
+    background: var(--tj-gold);
+    border-radius: 50%;
+    opacity: 0.12;
+    z-index: 0;
+  }
+
+  .flyer-inner { position: relative; z-index: 1; padding: 44px 52px 36px; }
+
+  /* HEADER */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 26px;
+  }
+  .brand {
+    display: flex; align-items: center; gap: 12px;
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 1.4rem;
+    letter-spacing: -0.02em;
+  }
+  .brand-mark {
+    width: 44px; height: 44px;
+    background: var(--tj-red); color: white;
+    border-radius: 10px;
+    display: grid; place-items: center;
+    font-family: var(--font-display); font-weight: 900;
+    font-size: 1.05rem;
+    box-shadow: 0 6px 14px rgba(200, 16, 46, 0.35);
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: white;
+    border: 1px solid var(--tj-line);
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--tj-red-deep);
+  }
+  .eyebrow .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--tj-red);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.3); } }
+
+  /* HERO */
+  .hero-title {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(2.2rem, 4.6vw, 3.6rem);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    margin-bottom: 14px;
+  }
+  .hero-title .accent { color: var(--tj-red); font-style: italic; }
+  .hero-title .underline { position: relative; display: inline-block; }
+  .hero-title .underline::after {
+    content: "";
+    position: absolute;
+    bottom: 0.05em; left: 0; right: 0;
+    height: 0.20em;
+    background: var(--tj-gold);
+    z-index: -1;
+    opacity: 0.7;
+  }
+  .lede {
+    font-size: clamp(1rem, 1.3vw, 1.1rem);
+    color: var(--tj-ink-soft);
+    margin-bottom: 24px;
+    max-width: 720px;
+  }
+
+  /* STATS STRIP */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  @media (max-width: 640px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+  .stat {
+    background: white;
+    border: 1px solid var(--tj-line);
+    border-radius: 12px;
+    padding: 14px 12px;
+    text-align: center;
+  }
+  .stat .num {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 1.6rem;
+    color: var(--tj-red);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat .label {
+    font-size: 0.74rem;
+    color: var(--tj-ink-soft);
+    font-weight: 600;
+    line-height: 1.25;
+  }
+
+  /* WHAT YOU GET */
+  .what-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  @media (max-width: 640px) { .what-row { grid-template-columns: repeat(2, 1fr); } }
+  .what-item {
+    background: white;
+    border: 1px solid var(--tj-line);
+    border-radius: 12px;
+    padding: 14px 12px;
+    text-align: center;
+  }
+  .what-item .ico {
+    font-size: 1.4rem;
+    margin-bottom: 6px;
+  }
+  .what-item .t {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--tj-ink);
+  }
+  .what-item .s {
+    font-size: 0.76rem;
+    color: var(--tj-ink-soft);
+    margin-top: 2px;
+  }
+
+  /* PRICING — 3 TIERS */
+  .section-eyebrow {
+    color: var(--tj-red);
+    font-weight: 700;
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(1.5rem, 2.6vw, 2rem);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 32px;
+  }
+  @media (max-width: 760px) { .pricing-grid { grid-template-columns: 1fr; } }
+  .tier {
+    background: white;
+    border-radius: 14px;
+    padding: 18px 16px;
+    border: 1px solid var(--tj-line);
+    position: relative;
+    overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+  .tier::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: var(--tj-line);
+  }
+  .tier-1::before { background: linear-gradient(90deg, var(--tj-gold), #d4a02e); }
+  .tier-2::before { background: linear-gradient(90deg, var(--tj-red), var(--tj-gold), var(--tj-red)); }
+  .tier-3::before { background: linear-gradient(90deg, var(--tj-navy), var(--tj-red)); }
+  .tier.featured {
+    border: 2px solid var(--tj-red);
+    box-shadow: 0 18px 36px rgba(200, 16, 46, 0.16);
+  }
+  .tier-badge {
+    display: inline-block;
+    background: var(--tj-cream);
+    color: var(--tj-ink-soft);
+    padding: 3px 9px;
+    border-radius: 999px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .tier.featured .tier-badge { background: var(--tj-gold); color: var(--tj-ink); }
+  .tier-3 .tier-badge { background: var(--tj-navy); color: white; }
+  .tier h4 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.05rem;
+    line-height: 1.18;
+    margin-bottom: 4px;
+  }
+  .tier .grade {
+    color: var(--tj-red);
+    font-weight: 600;
+    font-size: 0.74rem;
+    margin-bottom: 10px;
+  }
+  .tier .price {
+    display: flex; align-items: baseline; gap: 2px;
+    margin-bottom: 8px;
+  }
+  .tier .price .d {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1rem;
+    color: var(--tj-red);
+  }
+  .tier .price .a {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 1.9rem;
+    color: var(--tj-red);
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+  .tier .price .p {
+    color: var(--tj-ink-soft);
+    font-size: 0.7rem;
+    margin-left: 4px;
+  }
+  .tier p.desc {
+    font-size: 0.78rem;
+    color: var(--tj-ink-soft);
+    line-height: 1.4;
+  }
+
+  /* TUTORS LINE */
+  .tutors {
+    background: linear-gradient(135deg, var(--tj-navy), #2a3d6b);
+    color: white;
+    border-radius: 14px;
+    padding: 18px 22px;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+  .tutors .left {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .ava {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--tj-red), var(--tj-red-deep));
+    color: white;
+    display: grid; place-items: center;
+    font-family: var(--font-display); font-weight: 800;
+    font-size: 0.95rem;
+    box-shadow: 0 4px 10px rgba(200, 16, 46, 0.4);
+    letter-spacing: 0.03em;
+    border: 2px solid white;
+  }
+  .ava.b { margin-left: -18px; }
+  .tutors .copy { flex: 1; min-width: 260px; }
+  .tutors .copy strong {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.05rem;
+    display: block;
+    margin-bottom: 2px;
+  }
+  .tutors .copy span {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.78);
+  }
+
+  /* QR BLOCK */
+  .qr-section {
+    background: white;
+    border: 1px solid var(--tj-line);
+    border-radius: 16px;
+    padding: 26px 24px;
+    margin-bottom: 24px;
+  }
+  .qr-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+  @media (max-width: 640px) { .qr-grid { grid-template-columns: 1fr; } }
+  .qr-card {
+    border: 2px dashed var(--tj-line);
+    border-radius: 14px;
+    padding: 20px 16px;
+    text-align: center;
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    display: block;
+    color: inherit;
+  }
+  .qr-card:hover {
+    border-color: var(--tj-red);
+    transform: translateY(-3px);
+    box-shadow: 0 14px 28px rgba(200, 16, 46, 0.14);
+  }
+  .qr-card .qr-img {
+    width: 200px; height: 200px;
+    margin: 0 auto 14px;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid var(--tj-line);
+  }
+  .qr-card .qr-img img { width: 100%; height: 100%; }
+  .qr-step {
+    display: inline-block;
+    background: var(--tj-red);
+    color: white;
+    font-weight: 700;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 999px;
+    margin-bottom: 10px;
+  }
+  .qr-card.signup .qr-step { background: var(--tj-navy); }
+  .qr-card h4 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.15rem;
+    margin-bottom: 4px;
+  }
+  .qr-card p {
+    font-size: 0.84rem;
+    color: var(--tj-ink-soft);
+    margin-bottom: 12px;
+  }
+  .qr-card .cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--tj-red);
+    color: white;
+    padding: 9px 18px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.85rem;
+  }
+  .qr-card.signup .cta { background: var(--tj-navy); }
+  .qr-hint {
+    text-align: center;
+    margin-top: 18px;
+    font-size: 0.82rem;
+    color: var(--tj-ink-soft);
+  }
+  .qr-hint strong { color: var(--tj-ink); }
+
+  /* FOOTER */
+  .foot {
+    border-top: 1px solid var(--tj-line);
+    padding-top: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 0.8rem;
+    color: var(--tj-ink-soft);
+  }
+  .foot .site {
+    font-family: var(--font-display);
+    font-weight: 800;
+    color: var(--tj-red);
+    font-size: 0.95rem;
+  }
+  .foot .contact { text-align: right; }
+  .foot .small { font-size: 0.7rem; color: var(--tj-ink-soft); opacity: 0.7; margin-top: 4px; }
+
+  /* PRINT */
+  @media print {
+    body { background: white; padding: 0; }
+    .flyer { box-shadow: none; border-radius: 0; max-width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="flyer">
+  <div class="flyer-inner">
+
+    <!-- HEADER -->
+    <div class="header">
+      <a href="https://www.tj-brothers.com/" target="_blank" rel="noopener" class="brand">
+        <span class="brand-mark">TJ</span>
+        <span>The TJ Brothers</span>
+      </a>
+      <span class="eyebrow"><span class="dot"></span> 2026 Cohorts — Now Enrolling</span>
+    </div>
+
+    <!-- HERO -->
+    <h1 class="hero-title">
+      Get Into <span class="accent">TJ.</span><br>
+      Taught by <span class="underline">two brothers</span> who actually did it.
+    </h1>
+    <p class="lede">
+      Focused prep courses for the Thomas Jefferson High School admissions test — designed and taught by two recent TJ students who took the exam themselves and remember exactly what works.
+    </p>
+
+    <!-- STATS -->
+    <div class="stats">
+      <div class="stat"><div class="num">#1</div><div class="label">Public high school in the U.S.</div></div>
+      <div class="stat"><div class="num">3</div><div class="label">Courses for every grade</div></div>
+      <div class="stat"><div class="num">7–8</div><div class="label">Weeks in summer cohort</div></div>
+      <div class="stat"><div class="num">2×</div><div class="label">Live sessions per week</div></div>
+    </div>
+
+    <!-- WHAT YOU GET -->
+    <div class="what-row">
+      <div class="what-item"><div class="ico">📐</div><div class="t">Quant Reasoning</div><div class="s">Shortcuts, traps &amp; patterns</div></div>
+      <div class="what-item"><div class="ico">📖</div><div class="t">Reading &amp; Writing</div><div class="s">Comprehension + grammar</div></div>
+      <div class="what-item"><div class="ico">✍️</div><div class="t">Problem-Solving Essay</div><div class="s">Frameworks + live feedback</div></div>
+      <div class="what-item"><div class="ico">🎯</div><div class="t">Mock Tests</div><div class="s">Timed, with full review</div></div>
+    </div>
+
+    <!-- TUTORS -->
+    <div class="tutors">
+      <div class="left">
+        <div class="ava">WN</div>
+        <div class="ava b">NW</div>
+      </div>
+      <div class="copy">
+        <strong>Wyatt Nie &amp; Nathan Wang — Co-Founders</strong>
+        <span>Two brothers, both at TJ. Wyatt took the test this past year. Nathan is in his 2nd year at TJ (and recently scored a 1540 SAT).</span>
+      </div>
+    </div>
+
+    <!-- PRICING -->
+    <div class="section-eyebrow">Pricing &amp; Courses</div>
+    <h2 class="section-title">Three courses. One goal: get into TJ.</h2>
+    <div class="pricing-grid">
+      <div class="tier tier-1">
+        <span class="tier-badge">7th &amp; below</span>
+        <h4>Starting Your TJ Journey</h4>
+        <div class="grade">Early prep · Foundation</div>
+        <div class="price"><span class="d">$</span><span class="a">200</span><span class="p">/ student</span></div>
+        <p class="desc">Intro to TJ + a self-paced plan to keep younger students on track until test year.</p>
+      </div>
+      <div class="tier tier-2 featured">
+        <span class="tier-badge">⭐ Most popular · Rising 8th</span>
+        <h4>Locking In on TJ</h4>
+        <div class="grade">Summer cohort · Deep dive</div>
+        <div class="price"><span class="d">$</span><span class="a">400</span><span class="p">/ student</span></div>
+        <p class="desc">14+ live sessions over 7–8 weeks. Full Quant + Reading/Writing + essay + mock tests.</p>
+      </div>
+      <div class="tier tier-3">
+        <span class="tier-badge">Late Nov · 8th only</span>
+        <h4>The Final Showdown</h4>
+        <div class="grade">Pre-test sprint · 6 sessions</div>
+        <div class="price"><span class="d">$</span><span class="a">150</span><span class="p">/ student</span></div>
+        <p class="desc">Final polish before test day — pacing strategy, one more mock, last-minute review.</p>
+      </div>
+    </div>
+
+    <!-- QR CODES -->
+    <div class="qr-section">
+      <div class="section-eyebrow">Tap or scan</div>
+      <h2 class="section-title">Visit the site · Sign up in 2 minutes</h2>
+      <div class="qr-grid">
+        <a class="qr-card visit"
+           href="https://www.tj-brothers.com/"
+           target="_blank" rel="noopener"
+           aria-label="Visit tj-brothers.com">
+          <span class="qr-step">Step 1 · Learn more</span>
+          <div class="qr-img">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=400x400&margin=0&color=C8102E&data=https%3A%2F%2Fwww.tj-brothers.com%2F"
+                 alt="QR code linking to tj-brothers.com" />
+          </div>
+          <h4>Visit the Website</h4>
+          <p>tj-brothers.com — full course details, FAQ &amp; tutors</p>
+          <span class="cta">Open Website →</span>
+        </a>
+        <a class="qr-card signup"
+           href="https://docs.google.com/forms/d/e/1FAIpQLScmIcqq5hySFBag7DehgIW5nBjbOXDx-warS8GA5MFe7ykb8w/viewform"
+           target="_blank" rel="noopener"
+           aria-label="Open the TJ Brothers sign-up Google Form">
+          <span class="qr-step">Step 2 · Enroll</span>
+          <div class="qr-img">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=400x400&margin=0&color=1B2A4E&data=https%3A%2F%2Fdocs.google.com%2Fforms%2Fd%2Fe%2F1FAIpQLScmIcqq5hySFBag7DehgIW5nBjbOXDx-warS8GA5MFe7ykb8w%2Fviewform"
+                 alt="QR code linking to the TJ Brothers sign-up Google Form" />
+          </div>
+          <h4>Sign Up Now</h4>
+          <p>Google Form — student name, grade &amp; chosen course</p>
+          <span class="cta">Open Sign-Up Form →</span>
+        </a>
+      </div>
+      <p class="qr-hint">
+        <strong>On phone?</strong> Tap a code. <strong>On desktop?</strong> Scan it with your phone camera.
+        After signup, pay via <strong>Zelle</strong> to <strong>703-930-3774</strong> (Nathan Wang).
+      </p>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="foot">
+      <div>
+        <div class="site">tj-brothers.com</div>
+        <div class="small">© 2026 The TJ Brothers · Not affiliated with TJHSST or FCPS.</div>
+      </div>
+      <div class="contact">
+        wyattnie0827@gmail.com<br>
+        nathanwang0817@gmail.com
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
