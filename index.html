@@ -204,6 +204,158 @@
   .final-cta p { color: rgba(255,255,255,0.88); font-size: 1.1rem; margin-bottom: 32px; max-width: 560px; margin-left: auto; margin-right: auto; }
   .final-cta .btn-primary { background: white; color: var(--tj-red); }
   .final-cta .btn-primary:hover { background: var(--tj-cream); color: var(--tj-red-deep); }
+  /* INTRO CLASS EMAIL SIGNUP */
+.intro-banner {
+  background: linear-gradient(135deg, #E0F2FE 0%, #BAE6FD 100%);
+  border-top: 1px solid #7DD3FC;
+  border-bottom: 1px solid #7DD3FC;
+  padding: 28px 0;
+  position: relative;
+  overflow: hidden;
+}
+.intro-banner::before {
+  content: ""; position: absolute;
+  top: -40px; right: -40px; width: 180px; height: 180px;
+  background: radial-gradient(circle, rgba(14, 165, 233, 0.2), transparent 70%);
+  border-radius: 50%;
+}
+.intro-banner-inner {
+  max-width: var(--max);
+  margin: 0 auto; padding: 0 24px;
+  display: flex; align-items: center; gap: 24px;
+  flex-wrap: wrap;
+  position: relative; z-index: 1;
+}
+.intro-banner-text { flex: 1; min-width: 260px; }
+.intro-banner-tag {
+  display: inline-block;
+  background: #0369A1; color: white;
+  padding: 3px 10px; border-radius: 999px;
+  font-size: 0.7rem; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.intro-banner h4 {
+  font-family: var(--font-display);
+  font-weight: 800; font-size: 1.25rem;
+  color: #0C4A6E; line-height: 1.2;
+  margin-bottom: 4px;
+}
+.intro-banner p {
+  font-size: 0.9rem; color: #0369A1;
+  font-weight: 500;
+}
+.intro-banner .intro-btn {
+  background: #0EA5E9; color: white;
+  padding: 12px 24px; border-radius: 999px;
+  font-weight: 700; font-size: 0.95rem;
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+  box-shadow: 0 4px 14px rgba(14, 165, 233, 0.35);
+  white-space: nowrap;
+}
+.intro-banner .intro-btn:hover {
+  background: #0284C7; transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(14, 165, 233, 0.5);
+}
+
+/* INTRO CLASS — bigger section near the bottom */
+.intro-section {
+  background: linear-gradient(180deg, #F0F9FF 0%, #E0F2FE 100%);
+  padding: 80px 0;
+  position: relative;
+  overflow: hidden;
+}
+.intro-section::before {
+  content: ""; position: absolute;
+  top: -100px; left: -100px; width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(14, 165, 233, 0.15), transparent 70%);
+  border-radius: 50%;
+}
+.intro-section::after {
+  content: ""; position: absolute;
+  bottom: -100px; right: -100px; width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(125, 211, 252, 0.25), transparent 70%);
+  border-radius: 50%;
+}
+.intro-box {
+  max-width: 720px; margin: 0 auto;
+  background: white;
+  border: 2px solid #7DD3FC;
+  border-radius: 20px;
+  padding: 48px 40px;
+  text-align: center;
+  position: relative; z-index: 1;
+  box-shadow: 0 20px 50px rgba(14, 165, 233, 0.15);
+}
+.intro-box .intro-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: #E0F2FE; color: #0369A1;
+  padding: 6px 14px; border-radius: 999px;
+  font-size: 0.78rem; font-weight: 700;
+  letter-spacing: 0.05em; text-transform: uppercase;
+  margin-bottom: 18px;
+}
+.intro-box .intro-eyebrow .icon {
+  font-size: 1rem;
+}
+.intro-box h2 {
+  font-family: var(--font-display);
+  font-weight: 800; font-size: clamp(1.8rem, 4vw, 2.5rem);
+  color: #0C4A6E; line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-bottom: 14px;
+}
+.intro-box h2 .highlight {
+  color: #0EA5E9;
+}
+.intro-box .intro-desc {
+  font-size: 1.05rem; color: #0369A1;
+  max-width: 540px; margin: 0 auto 28px;
+  line-height: 1.55;
+}
+.intro-features {
+  display: flex; justify-content: center; gap: 24px;
+  flex-wrap: wrap; margin-bottom: 28px;
+  padding: 20px; background: #F0F9FF;
+  border-radius: 12px;
+}
+.intro-feat {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 0.92rem; font-weight: 600;
+  color: #075985;
+}
+.intro-feat .check {
+  width: 24px; height: 24px;
+  background: #0EA5E9; color: white;
+  border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 0.75rem; font-weight: 800;
+  flex-shrink: 0;
+}
+.intro-box .intro-cta {
+  display: inline-block;
+  background: linear-gradient(135deg, #0EA5E9, #0369A1);
+  color: white;
+  font-weight: 700; font-size: 1.05rem;
+  padding: 16px 36px; border-radius: 999px;
+  text-decoration: none;
+  box-shadow: 0 8px 24px rgba(14, 165, 233, 0.4);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.intro-box .intro-cta:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(14, 165, 233, 0.55);
+}
+.intro-box .small-note {
+  margin-top: 16px;
+  font-size: 0.82rem; color: #0369A1;
+  opacity: 0.8;
+}
+
+@media (max-width: 760px) {
+  .intro-banner-inner { flex-direction: column; align-items: flex-start; text-align: left; }
+  .intro-banner .intro-btn { width: 100%; text-align: center; }
+}
 /* REFERRAL DEAL — flashy section */
 .referral-section {
   background: linear-gradient(135deg, #FF006E 0%, #FB5607 25%, #FFBE0B 50%, #8338EC 75%, #3A86FF 100%);
@@ -485,6 +637,18 @@
     </div>
   </div>
 </header>
+
+<!-- INTRO CLASS BANNER (TOP) -->
+<div class="intro-banner">
+  <div class="intro-banner-inner">
+    <div class="intro-banner-text">
+      <div class="intro-banner-tag">🎁 Free</div>
+      <h4>Try our first class — completely free.</h4>
+      <p>Sit in on the intro session. No payment, no commitment — just bring your email.</p>
+    </div>
+    <a href="REPLACE_WITH_YOUR_GOOGLE_FORM_URL" target="_blank" rel="noopener" class="intro-btn">Get the Free Class →</a>
+  </div>
+</div>
 
 <!-- ABOUT TJ -->
 <section id="about-tj" class="about-tj">
@@ -781,6 +945,28 @@
     <a href="https://docs.google.com/forms/d/e/1FAIpQLScmIcqq5hySFBag7DehgIW5nBjbOXDx-warS8GA5MFe7ykb8w/viewform" target="_blank" rel="noopener" class="btn btn-primary">Sign Up Now</a>
   </div>
 </section>
+<!-- INTRO CLASS SECTION (BOTTOM) -->
+<section class="intro-section">
+  <div class="container">
+    <div class="intro-box">
+      <div class="intro-eyebrow">
+        <span class="icon">🎁</span> Free Intro Class · No Commitment
+      </div>
+      <h2>Not sure yet? <span class="highlight">Sit in on our first class — free.</span></h2>
+      <p class="intro-desc">
+        Want a feel for how we teach before you commit? Drop your email and we'll send you the link to our free introductory session. See the teaching style, meet the brothers, and decide from there.
+      </p>
+      <div class="intro-features">
+        <div class="intro-feat"><span class="check">✓</span> 100% free</div>
+        <div class="intro-feat"><span class="check">✓</span> No payment info</div>
+        <div class="intro-feat"><span class="check">✓</span> Just your email</div>
+      </div>
+      <a href="REPLACE_WITH_YOUR_GOOGLE_FORM_URL" target="_blank" rel="noopener" class="intro-cta">📩 Sign Up for the Free Class →</a>
+      <div class="small-note">We'll email you the class link 24 hours before. Spam-free, promise.</div>
+    </div>
+  </div>
+</section>
+
 <!-- ========== REFERRAL DEAL ========== -->
 <section class="referral-section">
   <!-- Floating sparkles -->
