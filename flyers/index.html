@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Flyers — Scan or Tap to Visit</title>
+<meta name="description" content="Printable flyers with pressable QR codes for nwp2015.com, tj-brothers.com, and satonlyonce.com." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800;9..144,900&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1A1413;
+    --ink-soft: #4A4140;
+    --cream: #FBF7F0;
+    --line: #E8DFD3;
+    --red: #C8102E;
+    --navy: #1B2A4E;
+    --gold: #E8B23B;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Manrope', system-ui, sans-serif;
+    color: var(--ink);
+    background: var(--cream);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    padding: 56px 24px 80px;
+  }
+  .wrap { max-width: 1100px; margin: 0 auto; }
+  .eyebrow { color: var(--red); font-weight: 700; font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 14px; }
+  h1 { font-family: 'Fraunces', Georgia, serif; font-weight: 900; font-size: clamp(2rem, 4vw, 3.2rem); letter-spacing: -0.02em; line-height: 1.05; margin-bottom: 14px; }
+  .lede { color: var(--ink-soft); font-size: 1.05rem; max-width: 620px; margin-bottom: 44px; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  @media (max-width: 880px) { .grid { grid-template-columns: 1fr; } }
+  .card {
+    display: flex; flex-direction: column;
+    background: white; border: 1px solid var(--line); border-radius: 16px;
+    padding: 26px; transition: transform 0.2s, box-shadow 0.2s;
+    text-decoration: none; color: inherit;
+  }
+  .card:hover { transform: translateY(-3px); box-shadow: 0 14px 32px rgba(27, 42, 78, 0.10); }
+  .card .tag {
+    display: inline-block; align-self: flex-start;
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em;
+    padding: 5px 10px; border-radius: 4px; color: white; margin-bottom: 18px;
+  }
+  .card.tj .tag { background: var(--red); }
+  .card.sat .tag { background: var(--navy); }
+  .card.nwp .tag { background: #0F766E; }
+  .card h2 { font-family: 'Fraunces', Georgia, serif; font-weight: 800; font-size: 1.55rem; line-height: 1.1; margin-bottom: 8px; letter-spacing: -0.01em; }
+  .card p { color: var(--ink-soft); font-size: 0.95rem; margin-bottom: 18px; }
+  .card .url { font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 0.95rem; color: var(--ink); border-top: 1px solid var(--line); padding-top: 14px; margin-top: auto; }
+  .card .open { margin-top: 10px; color: var(--red); font-weight: 700; font-size: 0.85rem; }
+  .card.sat .open { color: var(--navy); }
+  .card.nwp .open { color: #0F766E; }
+  footer { color: var(--ink-soft); font-size: 0.8rem; margin-top: 60px; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="eyebrow">Print &amp; Share</div>
+    <h1>Flyers with pressable QR codes</h1>
+    <p class="lede">Three single-page flyers — open one, tap or scan the QR to visit the site, or use your browser's print dialog to print a clean copy.</p>
+
+    <div class="grid">
+      <a class="card tj" href="./tj-brothers.html">
+        <span class="tag">TJ ADMISSIONS PREP</span>
+        <h2>TJ Brothers</h2>
+        <p>Prep courses for the Thomas Jefferson High School admissions test — taught by two brothers who recently took it.</p>
+        <div class="url">www.tj-brothers.com</div>
+        <div class="open">Open flyer →</div>
+      </a>
+
+      <a class="card sat" href="./sat-only-once.html">
+        <span class="tag">SAT PREP</span>
+        <h2>SAT Only Once</h2>
+        <p>Focused SAT prep designed to help you take the test once and get the score you need.</p>
+        <div class="url">www.satonlyonce.com</div>
+        <div class="open">Open flyer →</div>
+      </a>
+
+      <a class="card nwp" href="./nwp2015.html">
+        <span class="tag">VISIT THE SITE</span>
+        <h2>NWP 2015</h2>
+        <p>Scan or tap to explore the site.</p>
+        <div class="url">www.nwp2015.com</div>
+        <div class="open">Open flyer →</div>
+      </a>
+    </div>
+
+    <footer>Each flyer prints cleanly on Letter or A4. The QR code is fully pressable on phones, tablets, and desktops.</footer>
+  </div>
+</body>
+</html>
