@@ -1077,7 +1077,7 @@
    ========================================================== */
 (function () {
   // ---- Fallback form (used if PREFILL_URL below is left blank) ----
-  var FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScmIcqq5hySFBag7DehgIW5nBjbOXDx-warS8GA5MFe7ykb8w/viewform';
+  var FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSeh7AE9TOuuLi6tPkFYBkzpCpIMNILPJJlLLibqupxkQJgJAA/viewform';
 
   /* ==========================================================
      PREFILL_URL — paste ONE link here and the form arrives
@@ -1095,7 +1095,7 @@
      The script swaps SESSION for whatever the visitor picked.
      Leave it as '' and the button just opens FORM_URL instead.
      ========================================================== */
-  var PREFILL_URL = '';
+  var PREFILL_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSeh7AE9TOuuLi6tPkFYBkzpCpIMNILPJJlLLibqupxkQJgJAA/viewform?usp=pp_url&entry.389963067=SESSION';
 
   /* ==========================================================
      BOOKED_CSV — makes taken slots disappear automatically.
@@ -1120,7 +1120,7 @@
 
      Leave '' and every slot simply shows as available.
      ========================================================== */
-  var BOOKED_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQfR_7ZINU5E5AjpRL1nU_zLLp3nUw8JNt69xvTfKHS3klFEI7CLlaVtH6h4ce5Am38Ywa-yyhsKwyV/pubhtml?gid=1660164360&single=true';
+  var BOOKED_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQfR_7ZINU5E5AjpRL1nU_zLLp3nUw8JNt69xvTfKHS3klFEI7CLlaVtH6h4ce5Am38Ywa-yyhsKwyV/pub?gid=1660164360&single=true&output=csv';
 
   // Slots you booked yourself (phone, email, whatever). Same wording
   // the page shows, e.g. 'Saturday, September 12, 9:00 - 10:00 AM ET'
@@ -1206,6 +1206,15 @@
     txt.textContent = text;
   }
 
+  // A "Publish to web" link copied from the HTML view won't parse as CSV.
+  // Repair it rather than silently failing.
+  function csvUrl(u) {
+    if (!u) return '';
+    u = u.replace('/pubhtml', '/pub');
+    if (u.indexOf('output=csv') === -1) u += (u.indexOf('?') > -1 ? '&' : '?') + 'output=csv';
+    return u;
+  }
+
   function loadBooked() {
     BOOKED = {};
     for (var i = 0; i < BOOKED_MANUAL.length; i++) BOOKED[norm(BOOKED_MANUAL[i])] = true;
@@ -1215,7 +1224,7 @@
       render();
       return;
     }
-    var url = BOOKED_CSV + (BOOKED_CSV.indexOf('?') > -1 ? '&' : '?') + 'cb=' + Date.now();
+    var url = csvUrl(BOOKED_CSV) + '&cb=' + Date.now();
     fetch(url, { cache: 'no-store' })
       .then(function (r) { if (!r.ok) throw new Error('http ' + r.status); return r.text(); })
       .then(function (txt) {
