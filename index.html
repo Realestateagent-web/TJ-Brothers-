@@ -9,7 +9,7 @@
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800;9..144,900&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800;9..144,900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
   :root {
@@ -40,20 +40,42 @@
   img { max-width: 100%; display: block; }
   .container { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
 
+  /* ===== ANNOUNCEMENT BAR ===== */
+  .announce {
+    background: linear-gradient(90deg, var(--tj-red-deep), var(--tj-red) 45%, #d4922a 100%);
+    color: #fff;
+    font-size: 0.92rem;
+    font-weight: 600;
+    position: relative;
+    z-index: 60;
+  }
+  .announce-inner {
+    max-width: var(--max); margin: 0 auto; padding: 11px 24px;
+    display: flex; align-items: center; justify-content: center;
+    gap: 18px; flex-wrap: wrap; text-align: center;
+  }
+  .announce .live { display: inline-flex; align-items: center; gap: 8px; font-weight: 800; letter-spacing: 0.04em; }
+  .announce .live .dot { width: 9px; height: 9px; border-radius: 50%; background: #FFE082; box-shadow: 0 0 0 0 rgba(255,224,130,.8); animation: ring 1.8s infinite; }
+  @keyframes ring { 0% { box-shadow: 0 0 0 0 rgba(255,224,130,.7);} 70% { box-shadow: 0 0 0 10px rgba(255,224,130,0);} 100% { box-shadow: 0 0 0 0 rgba(255,224,130,0);} }
+  .announce a { text-decoration: underline; text-underline-offset: 3px; font-weight: 800; }
+  .announce .sep { opacity: .55; }
+  @media (max-width: 640px) { .announce .sep { display: none; } .announce-inner { gap: 6px; font-size: .85rem; } }
+
   /* NAV */
   .nav { position: sticky; top: 0; z-index: 50; background: rgba(251, 247, 240, 0.92); backdrop-filter: blur(10px); border-bottom: 1px solid var(--tj-line); }
   .nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; max-width: var(--max); margin: 0 auto; }
   .brand { font-family: var(--font-display); font-weight: 900; font-size: 1.4rem; letter-spacing: -0.02em; display: flex; align-items: center; gap: 10px; }
   .brand-mark { width: 34px; height: 34px; background: var(--tj-red); color: white; border-radius: 8px; display: grid; place-items: center; font-family: var(--font-display); font-weight: 900; font-size: 0.95rem; box-shadow: 0 4px 12px rgba(200, 16, 46, 0.3); }
-  .nav-links { display: flex; gap: 28px; align-items: center; }
+  .nav-links { display: flex; gap: 24px; align-items: center; }
   .nav-links a { font-size: 0.92rem; font-weight: 500; color: var(--tj-ink-soft); transition: color 0.2s; }
   .nav-links a:hover { color: var(--tj-red); }
+  .nav-links a.hot { color: var(--tj-red); font-weight: 700; }
   .nav-cta { background: var(--tj-red); color: white !important; padding: 9px 18px; border-radius: 999px; font-weight: 600 !important; font-size: 0.88rem !important; transition: transform 0.2s, box-shadow 0.2s; }
   .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(200, 16, 46, 0.35); }
-  @media (max-width: 720px) { .nav-links a:not(.nav-cta) { display: none; } }
+  @media (max-width: 860px) { .nav-links a:not(.nav-cta) { display: none; } }
 
   /* HERO */
-  .hero { position: relative; overflow: hidden; padding: 90px 0 110px; background: radial-gradient(circle at 85% 20%, rgba(232, 178, 59, 0.18), transparent 50%), radial-gradient(circle at 10% 80%, rgba(200, 16, 46, 0.10), transparent 55%), var(--tj-cream); }
+  .hero { position: relative; overflow: hidden; padding: 80px 0 96px; background: radial-gradient(circle at 85% 20%, rgba(232, 178, 59, 0.18), transparent 50%), radial-gradient(circle at 10% 80%, rgba(200, 16, 46, 0.10), transparent 55%), var(--tj-cream); }
   .hero::before { content: ""; position: absolute; top: -100px; right: -100px; width: 400px; height: 400px; background: var(--tj-red); border-radius: 50%; opacity: 0.06; z-index: 0; }
   .hero-inner { position: relative; z-index: 1; max-width: var(--max); margin: 0 auto; padding: 0 24px; }
   .eyebrow { display: inline-flex; align-items: center; gap: 8px; background: white; border: 1px solid var(--tj-line); padding: 7px 14px; border-radius: 999px; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.02em; color: var(--tj-red-deep); margin-bottom: 24px; }
@@ -63,14 +85,14 @@
   .hero h1 .accent { color: var(--tj-red); font-style: italic; font-weight: 800; }
   .hero h1 .underline { position: relative; display: inline-block; }
   .hero h1 .underline::after { content: ""; position: absolute; bottom: 0.05em; left: 0; right: 0; height: 0.18em; background: var(--tj-gold); z-index: -1; opacity: 0.7; }
-  .hero p.lede { font-size: 1.18rem; color: var(--tj-ink-soft); max-width: 620px; margin-bottom: 36px; }
+  .hero p.lede { font-size: 1.18rem; color: var(--tj-ink-soft); max-width: 620px; margin-bottom: 32px; }
   .hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; }
   .btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 26px; border-radius: 999px; font-weight: 600; font-size: 0.98rem; transition: transform 0.2s, box-shadow 0.2s, background 0.2s; border: none; cursor: pointer; }
   .btn-primary { background: var(--tj-red); color: white; box-shadow: 0 6px 18px rgba(200, 16, 46, 0.28); }
   .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(200, 16, 46, 0.4); background: var(--tj-red-deep); }
   .btn-secondary { background: white; color: var(--tj-ink); border: 1.5px solid var(--tj-ink); }
   .btn-secondary:hover { background: var(--tj-ink); color: white; transform: translateY(-2px); }
-  .hero-stats { display: flex; gap: 48px; margin-top: 70px; flex-wrap: wrap; }
+  .hero-stats { display: flex; gap: 48px; margin-top: 60px; flex-wrap: wrap; }
   .stat .num { font-family: var(--font-display); font-weight: 900; font-size: 2.4rem; color: var(--tj-red); line-height: 1; margin-bottom: 6px; }
   .stat .label { font-size: 0.88rem; color: var(--tj-ink-soft); font-weight: 500; }
 
@@ -79,6 +101,90 @@
   .section-eyebrow { color: var(--tj-red); font-weight: 700; font-size: 0.82rem; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 14px; }
   .section-title { font-family: var(--font-display); font-weight: 800; font-size: clamp(2rem, 4vw, 3rem); letter-spacing: -0.02em; line-height: 1.08; margin-bottom: 18px; max-width: 720px; }
   .section-sub { font-size: 1.08rem; color: var(--tj-ink-soft); max-width: 640px; margin-bottom: 50px; }
+
+  /* ===== NOVEMBER COHORT — THE BIG ONE ===== */
+  .nov {
+    background:
+      radial-gradient(circle at 12% 15%, rgba(232,178,59,.20), transparent 45%),
+      radial-gradient(circle at 88% 85%, rgba(200,16,46,.28), transparent 50%),
+      linear-gradient(160deg, #24143a 0%, #2b1030 40%, #3a0f24 100%);
+    color: #fff; position: relative; overflow: hidden; padding: 84px 0 90px;
+  }
+  .nov::before {
+    content: ""; position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+    background-size: 46px 46px; mask-image: radial-gradient(circle at 50% 40%, black, transparent 78%);
+  }
+  .nov-inner { position: relative; z-index: 2; }
+  .nov-flag {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--tj-gold); color: #241a05;
+    font-weight: 800; font-size: .82rem; letter-spacing: .1em; text-transform: uppercase;
+    padding: 8px 16px; border-radius: 999px; margin-bottom: 20px;
+    box-shadow: 0 8px 24px rgba(232,178,59,.35);
+  }
+  .nov-flag .pip { width: 8px; height: 8px; border-radius: 50%; background: var(--tj-red); animation: pulse 1.6s infinite; }
+  .nov h2 {
+    font-family: var(--font-display); font-weight: 900;
+    font-size: clamp(2.3rem, 6.2vw, 4.2rem); line-height: 1.02;
+    letter-spacing: -0.03em; margin-bottom: 16px; max-width: 900px;
+  }
+  .nov h2 em { color: var(--tj-gold); font-style: italic; }
+  .nov .nov-lede { font-size: 1.12rem; color: rgba(255,255,255,.82); max-width: 640px; margin-bottom: 34px; }
+
+  .countdown { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 34px; }
+  .cd-unit {
+    background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.16);
+    border-radius: 14px; padding: 14px 18px; min-width: 86px; text-align: center;
+    backdrop-filter: blur(6px);
+  }
+  .cd-unit .v { font-family: var(--font-display); font-weight: 900; font-size: 2.1rem; line-height: 1; color: var(--tj-gold); }
+  .cd-unit .k { font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.6); margin-top: 6px; font-weight: 700; }
+  .cd-caption { font-size: .9rem; color: rgba(255,255,255,.7); align-self: center; max-width: 220px; font-weight: 500; }
+
+  .nov-grid { display: grid; grid-template-columns: 1.25fr 1fr; gap: 34px; align-items: start; }
+  @media (max-width: 900px) { .nov-grid { grid-template-columns: 1fr; } }
+
+  .nov-points { list-style: none; display: grid; gap: 14px; margin-bottom: 30px; }
+  .nov-points li { display: flex; gap: 14px; align-items: flex-start; font-size: 1.02rem; color: rgba(255,255,255,.9); }
+  .nov-points li .ic {
+    flex-shrink: 0; width: 26px; height: 26px; border-radius: 8px;
+    background: rgba(232,178,59,.18); border: 1px solid rgba(232,178,59,.45);
+    color: var(--tj-gold); display: grid; place-items: center; font-size: .8rem; font-weight: 800; margin-top: 2px;
+  }
+  .nov-points li strong { color: #fff; }
+
+  .nov-card {
+    background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.18);
+    border-radius: 18px; padding: 28px; backdrop-filter: blur(10px);
+  }
+  .nov-card h4 { font-family: var(--font-display); font-weight: 800; font-size: 1.15rem; margin-bottom: 16px; color: #fff; }
+  .sched { list-style: none; display: grid; gap: 0; }
+  .sched li {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 0; border-bottom: 1px dashed rgba(255,255,255,.14);
+    font-size: .95rem; color: rgba(255,255,255,.85);
+  }
+  .sched li:last-child { border-bottom: none; }
+  .sched .n {
+    width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
+    background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
+    display: grid; place-items: center; font-size: .78rem; font-weight: 800; color: rgba(255,255,255,.75);
+  }
+  .sched li.final { color: var(--tj-gold); font-weight: 700; }
+  .sched li.final .n { background: var(--tj-gold); color: #241a05; border-color: var(--tj-gold); }
+  .sched .tag { margin-left: auto; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; font-weight: 800; opacity: .8; }
+  .testday {
+    margin-top: 16px; padding: 14px 16px; border-radius: 12px;
+    background: rgba(200,16,46,.28); border: 1px solid rgba(255,255,255,.2);
+    font-size: .92rem; font-weight: 700; display: flex; align-items: center; gap: 10px;
+  }
+  .nov-ctas { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+  .btn-gold { background: var(--tj-gold); color: #241a05; box-shadow: 0 10px 28px rgba(232,178,59,.35); font-weight: 800; }
+  .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 14px 34px rgba(232,178,59,.5); background: #f2c353; }
+  .btn-ghost-light { background: transparent; color: #fff; border: 1.5px solid rgba(255,255,255,.45); }
+  .btn-ghost-light:hover { background: #fff; color: var(--tj-ink); }
+  .nov-note { font-size: .86rem; color: rgba(255,255,255,.6); margin-top: 16px; }
 
   /* ABOUT TJ */
   .about-tj { background: white; border-top: 1px solid var(--tj-line); border-bottom: 1px solid var(--tj-line); }
@@ -153,9 +259,9 @@
   .pricing-card.tier-showdown::before { background: linear-gradient(90deg, var(--tj-navy), var(--tj-red)); }
   .pricing-card.featured { border: 2px solid var(--tj-red); box-shadow: 0 30px 60px rgba(200, 16, 46, 0.18); transform: translateY(-8px); }
   @media (max-width: 980px) { .pricing-card.featured { transform: none; } }
+  .pricing-card.is-later { opacity: .82; }
   .pricing-badge { display: inline-block; background: var(--tj-cream); color: var(--tj-ink-soft); padding: 4px 12px; border-radius: 999px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; }
-  .pricing-card.featured .pricing-badge { background: var(--tj-gold); color: var(--tj-ink); }
-  .pricing-card.tier-showdown .pricing-badge { background: var(--tj-navy); color: white; }
+  .pricing-card.featured .pricing-badge { background: var(--tj-red); color: white; }
   .pricing-card h3 { font-family: var(--font-display); font-weight: 800; font-size: 1.45rem; margin-bottom: 6px; line-height: 1.15; }
   .pricing-card .grade-tag { color: var(--tj-red); font-weight: 600; font-size: 0.85rem; margin-bottom: 14px; }
   .pricing-card .desc { color: var(--tj-ink-soft); margin-bottom: 22px; font-size: 0.94rem; min-height: 60px; }
@@ -168,6 +274,81 @@
   .pricing-list li::before { content: "✓"; color: var(--tj-red); font-weight: 800; flex-shrink: 0; }
   .pricing-card .btn { width: 100%; justify-content: center; margin-top: auto; }
   .returner-note { font-size: 0.8rem; color: var(--tj-ink-soft); font-style: italic; margin-top: 12px; text-align: center; background: var(--tj-cream); padding: 8px 12px; border-radius: 8px; border: 1px dashed var(--tj-line); }
+
+  /* ===== 1-ON-1 TUTORING + CALENDAR ===== */
+  .oneone { background: linear-gradient(180deg, #F5F7FC 0%, #EAEFF8 100%); border-top: 1px solid var(--tj-line); }
+  .oneone .section-eyebrow { color: var(--tj-navy); }
+  .oo-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 30px; flex-wrap: wrap; margin-bottom: 40px; }
+  .oo-rate {
+    background: var(--tj-navy); color: #fff; border-radius: 16px;
+    padding: 20px 26px; text-align: center; box-shadow: 0 16px 36px rgba(27,42,78,.22); flex-shrink: 0;
+  }
+  .oo-rate .amt { font-family: var(--font-display); font-weight: 900; font-size: 2.6rem; line-height: 1; color: var(--tj-gold); }
+  .oo-rate .per { font-size: .82rem; color: rgba(255,255,255,.75); font-weight: 600; margin-top: 4px; letter-spacing: .04em; }
+
+  .oo-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 26px; align-items: start; }
+  @media (max-width: 900px) { .oo-grid { grid-template-columns: 1fr; } }
+
+  .cal-card, .slot-card {
+    background: #fff; border: 1px solid var(--tj-line); border-radius: 18px;
+    padding: 24px; box-shadow: 0 14px 34px rgba(27,42,78,.07);
+  }
+  .cal-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+  .cal-month { font-family: var(--font-display); font-weight: 800; font-size: 1.25rem; }
+  .cal-nav { display: flex; gap: 8px; }
+  .cal-nav button {
+    width: 36px; height: 36px; border-radius: 10px; border: 1px solid var(--tj-line);
+    background: var(--tj-cream); cursor: pointer; font-size: 1rem; font-weight: 700; color: var(--tj-ink);
+    transition: background .15s, border-color .15s;
+  }
+  .cal-nav button:hover:not(:disabled) { background: var(--tj-red); color: #fff; border-color: var(--tj-red); }
+  .cal-nav button:disabled { opacity: .3; cursor: not-allowed; }
+  .cal-dow { display: grid; grid-template-columns: repeat(7,1fr); gap: 6px; margin-bottom: 8px; }
+  .cal-dow span { text-align: center; font-size: .72rem; font-weight: 800; letter-spacing: .06em; color: var(--tj-ink-soft); text-transform: uppercase; }
+  .cal-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 6px; }
+  .cal-day {
+    aspect-ratio: 1/1; border-radius: 10px; border: 1px solid transparent;
+    background: var(--tj-cream); display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 3px;
+    font-size: .95rem; font-weight: 600; cursor: pointer;
+    transition: transform .12s, background .15s, border-color .15s, color .15s;
+    position: relative; font-family: var(--font-body); color: var(--tj-ink);
+  }
+  .cal-day .pipdot { width: 5px; height: 5px; border-radius: 50%; background: var(--tj-red); opacity: .75; }
+  .cal-day:hover:not(.is-off):not(.is-empty) { transform: translateY(-2px); border-color: var(--tj-red); }
+  .cal-day.is-empty { background: transparent; cursor: default; }
+  .cal-day.is-off { background: #F2EEE7; color: #BDB4A9; cursor: not-allowed; }
+  .cal-day.is-off .pipdot { display: none; }
+  .cal-day.is-today { border-color: var(--tj-gold); }
+  .cal-day.is-sel { background: var(--tj-red); color: #fff; border-color: var(--tj-red); box-shadow: 0 8px 20px rgba(200,16,46,.32); }
+  .cal-day.is-sel .pipdot { background: #fff; }
+  .cal-legend { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 16px; font-size: .78rem; color: var(--tj-ink-soft); }
+  .cal-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+
+  .slot-card h4 { font-family: var(--font-display); font-weight: 800; font-size: 1.15rem; margin-bottom: 6px; }
+  .slot-card .hint { font-size: .88rem; color: var(--tj-ink-soft); margin-bottom: 18px; }
+  .slots { display: grid; grid-template-columns: repeat(auto-fit, minmax(148px, 1fr)); gap: 8px; }
+  .slot {
+    padding: 11px 10px; border-radius: 10px; border: 1px solid var(--tj-line);
+    background: var(--tj-cream); font-size: .9rem; font-weight: 700; cursor: pointer;
+    text-align: center; transition: all .15s; color: var(--tj-ink); font-family: var(--font-body);
+  }
+  .slot:hover { border-color: var(--tj-navy); transform: translateY(-2px); }
+  .slot.sel { background: var(--tj-navy); color: #fff; border-color: var(--tj-navy); }
+  .picked {
+    margin-top: 18px; padding: 16px; border-radius: 12px;
+    background: #F0F5FF; border: 1px dashed var(--tj-navy);
+  }
+  .picked .lbl { font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; font-weight: 800; color: var(--tj-navy); margin-bottom: 6px; }
+  .picked .val { font-family: var(--font-display); font-weight: 800; font-size: 1.05rem; line-height: 1.3; }
+  .picked .cost { font-size: .86rem; color: var(--tj-ink-soft); margin-top: 4px; }
+  .picked-actions { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+  .btn-navy { background: var(--tj-navy); color: #fff; }
+  .btn-navy:hover { background: #101c38; transform: translateY(-2px); }
+  .btn-copy { background: #fff; border: 1.5px solid var(--tj-navy); color: var(--tj-navy); }
+  .btn-copy:hover { background: var(--tj-navy); color: #fff; }
+  .btn-sm { padding: 11px 18px; font-size: .9rem; }
+  .oo-note { font-size: .82rem; color: var(--tj-ink-soft); margin-top: 14px; line-height: 1.5; }
 
   /* PAYMENT / ENROLL */
   .payment { background: white; border-top: 1px solid var(--tj-line); }
@@ -204,370 +385,58 @@
   .final-cta p { color: rgba(255,255,255,0.88); font-size: 1.1rem; margin-bottom: 32px; max-width: 560px; margin-left: auto; margin-right: auto; }
   .final-cta .btn-primary { background: white; color: var(--tj-red); }
   .final-cta .btn-primary:hover { background: var(--tj-cream); color: var(--tj-red-deep); }
-  /* INTRO CLASS EMAIL SIGNUP */
-.intro-banner {
-  background: linear-gradient(135deg, #E0F2FE 0%, #BAE6FD 100%);
-  border-top: 1px solid #7DD3FC;
-  border-bottom: 1px solid #7DD3FC;
-  padding: 28px 0;
-  position: relative;
-  overflow: hidden;
-}
-.intro-banner::before {
-  content: ""; position: absolute;
-  top: -40px; right: -40px; width: 180px; height: 180px;
-  background: radial-gradient(circle, rgba(14, 165, 233, 0.2), transparent 70%);
-  border-radius: 50%;
-}
-.intro-banner-inner {
-  max-width: var(--max);
-  margin: 0 auto; padding: 0 24px;
-  display: flex; align-items: center; gap: 24px;
-  flex-wrap: wrap;
-  position: relative; z-index: 1;
-}
-.intro-banner-text { flex: 1; min-width: 260px; }
-.intro-banner-tag {
-  display: inline-block;
-  background: #0369A1; color: white;
-  padding: 3px 10px; border-radius: 999px;
-  font-size: 0.7rem; font-weight: 700;
-  letter-spacing: 0.08em; text-transform: uppercase;
-  margin-bottom: 6px;
-}
-.intro-banner h4 {
-  font-family: var(--font-display);
-  font-weight: 800; font-size: 1.25rem;
-  color: #0C4A6E; line-height: 1.2;
-  margin-bottom: 4px;
-}
-.intro-banner p {
-  font-size: 0.9rem; color: #0369A1;
-  font-weight: 500;
-}
-.intro-banner .intro-btn {
-  background: #0EA5E9; color: white;
-  padding: 12px 24px; border-radius: 999px;
-  font-weight: 700; font-size: 0.95rem;
-  transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
-  box-shadow: 0 4px 14px rgba(14, 165, 233, 0.35);
-  white-space: nowrap;
-}
-.intro-banner .intro-btn:hover {
-  background: #0284C7; transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(14, 165, 233, 0.5);
-}
 
-/* INTRO CLASS — bigger section near the bottom */
-.intro-section {
-  background: linear-gradient(180deg, #F0F9FF 0%, #E0F2FE 100%);
-  padding: 80px 0;
-  position: relative;
-  overflow: hidden;
-}
-.intro-section::before {
-  content: ""; position: absolute;
-  top: -100px; left: -100px; width: 400px; height: 400px;
-  background: radial-gradient(circle, rgba(14, 165, 233, 0.15), transparent 70%);
-  border-radius: 50%;
-}
-.intro-section::after {
-  content: ""; position: absolute;
-  bottom: -100px; right: -100px; width: 400px; height: 400px;
-  background: radial-gradient(circle, rgba(125, 211, 252, 0.25), transparent 70%);
-  border-radius: 50%;
-}
-.intro-box {
-  max-width: 720px; margin: 0 auto;
-  background: white;
-  border: 2px solid #7DD3FC;
-  border-radius: 20px;
-  padding: 48px 40px;
-  text-align: center;
-  position: relative; z-index: 1;
-  box-shadow: 0 20px 50px rgba(14, 165, 233, 0.15);
-}
-.intro-box .intro-eyebrow {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: #E0F2FE; color: #0369A1;
-  padding: 6px 14px; border-radius: 999px;
-  font-size: 0.78rem; font-weight: 700;
-  letter-spacing: 0.05em; text-transform: uppercase;
-  margin-bottom: 18px;
-}
-.intro-box .intro-eyebrow .icon {
-  font-size: 1rem;
-}
-.intro-box h2 {
-  font-family: var(--font-display);
-  font-weight: 800; font-size: clamp(1.8rem, 4vw, 2.5rem);
-  color: #0C4A6E; line-height: 1.15;
-  letter-spacing: -0.02em;
-  margin-bottom: 14px;
-}
-.intro-box h2 .highlight {
-  color: #0EA5E9;
-}
-.intro-box .intro-desc {
-  font-size: 1.05rem; color: #0369A1;
-  max-width: 540px; margin: 0 auto 28px;
-  line-height: 1.55;
-}
-.intro-features {
-  display: flex; justify-content: center; gap: 24px;
-  flex-wrap: wrap; margin-bottom: 28px;
-  padding: 20px; background: #F0F9FF;
-  border-radius: 12px;
-}
-.intro-feat {
-  display: flex; align-items: center; gap: 8px;
-  font-size: 0.92rem; font-weight: 600;
-  color: #075985;
-}
-.intro-feat .check {
-  width: 24px; height: 24px;
-  background: #0EA5E9; color: white;
-  border-radius: 50%;
-  display: inline-flex; align-items: center; justify-content: center;
-  font-size: 0.75rem; font-weight: 800;
-  flex-shrink: 0;
-}
-.intro-box .intro-cta {
-  display: inline-block;
-  background: linear-gradient(135deg, #0EA5E9, #0369A1);
-  color: white;
-  font-weight: 700; font-size: 1.05rem;
-  padding: 16px 36px; border-radius: 999px;
-  text-decoration: none;
-  box-shadow: 0 8px 24px rgba(14, 165, 233, 0.4);
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-.intro-box .intro-cta:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 30px rgba(14, 165, 233, 0.55);
-}
-.intro-box .small-note {
-  margin-top: 16px;
-  font-size: 0.82rem; color: #0369A1;
-  opacity: 0.8;
-}
+  /* REFERRAL DEAL */
+  .referral-section { background: linear-gradient(135deg, #FF006E 0%, #FB5607 25%, #FFBE0B 50%, #8338EC 75%, #3A86FF 100%); background-size: 300% 300%; animation: gradient-shift 6s ease infinite; padding: 80px 0; position: relative; overflow: hidden; text-align: center; color: white; }
+  @keyframes gradient-shift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+  .referral-section::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 20% 30%, rgba(255,255,255,0.15), transparent 40%), radial-gradient(circle at 80% 70%, rgba(255,255,255,0.1), transparent 40%); }
+  .referral-inner { position: relative; z-index: 2; }
+  .sparkle { position: absolute; font-size: 2rem; z-index: 1; animation: float 4s ease-in-out infinite; filter: drop-shadow(0 0 8px rgba(255,255,255,0.6)); }
+  .sparkle.s1 { top: 8%; left: 8%; animation-delay: 0s; }
+  .sparkle.s2 { top: 15%; right: 12%; animation-delay: 0.5s; font-size: 1.5rem; }
+  .sparkle.s3 { top: 35%; left: 5%; animation-delay: 1s; }
+  .sparkle.s4 { top: 25%; right: 8%; animation-delay: 1.5s; font-size: 1.8rem; }
+  .sparkle.s5 { bottom: 30%; left: 10%; animation-delay: 2s; font-size: 1.6rem; }
+  .sparkle.s6 { bottom: 20%; right: 15%; animation-delay: 2.5s; }
+  .sparkle.s7 { bottom: 10%; left: 20%; animation-delay: 3s; font-size: 1.4rem; }
+  .sparkle.s8 { top: 50%; right: 5%; animation-delay: 3.5s; font-size: 1.7rem; }
+  @keyframes float { 0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.7; } 50% { transform: translateY(-20px) rotate(15deg); opacity: 1; } }
+  .limited-tag { display: inline-flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.4); color: #FFD700; padding: 8px 18px; border-radius: 999px; font-weight: 800; font-size: 0.9rem; letter-spacing: 0.08em; border: 2px solid #FFD700; margin-bottom: 20px; animation: pulse-tag 1.5s ease-in-out infinite; text-shadow: 0 0 10px rgba(255, 215, 0, 0.8); }
+  @keyframes pulse-tag { 0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7); } 50% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(255, 215, 0, 0); } }
+  .blink-dot { width: 10px; height: 10px; background: #FF0000; border-radius: 50%; animation: blink 0.8s ease-in-out infinite; box-shadow: 0 0 10px #FF0000; }
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+  .referral-title { font-family: var(--font-display); font-weight: 900; font-size: clamp(2.5rem, 8vw, 5rem); line-height: 1; letter-spacing: -0.03em; margin-bottom: 30px; text-shadow: 0 4px 20px rgba(0,0,0,0.3); animation: bounce-title 2s ease-in-out infinite; }
+  @keyframes bounce-title { 0%, 100% { transform: translateY(0) rotate(-1deg); } 50% { transform: translateY(-8px) rotate(1deg); } }
+  .rainbow-text { background: linear-gradient(90deg, #FFFFFF, #FFD700, #FFFFFF, #FFD700); background-size: 200% auto; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; animation: shine 2s linear infinite; }
+  @keyframes shine { to { background-position: 200% center; } }
+  .referral-discount { display: inline-flex; align-items: center; gap: 24px; background: rgba(0,0,0,0.25); backdrop-filter: blur(10px); border: 3px solid #FFD700; border-radius: 24px; padding: 24px 36px; margin-bottom: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.3), inset 0 0 30px rgba(255,215,0,0.2); animation: glow 2s ease-in-out infinite; }
+  @keyframes glow { 0%, 100% { box-shadow: 0 10px 40px rgba(0,0,0,0.3), inset 0 0 30px rgba(255,215,0,0.2), 0 0 30px rgba(255,215,0,0.4); } 50% { box-shadow: 0 10px 40px rgba(0,0,0,0.3), inset 0 0 30px rgba(255,215,0,0.4), 0 0 60px rgba(255,215,0,0.8); } }
+  .discount-amount { font-family: var(--font-display); font-weight: 900; color: #FFD700; display: flex; align-items: baseline; text-shadow: 0 4px 20px rgba(0,0,0,0.5), 0 0 30px rgba(255,215,0,0.6); }
+  .discount-amount .dollar { font-size: 2.5rem; }
+  .discount-amount .number { font-size: 5rem; line-height: 1; letter-spacing: -0.03em; }
+  .discount-label { font-weight: 800; font-size: 1.1rem; text-align: left; line-height: 1.2; }
+  .discount-label .per-text { font-weight: 500; font-size: 0.85rem; opacity: 0.9; }
+  @media (max-width: 520px) { .referral-discount { flex-direction: column; gap: 8px; padding: 20px 24px; } .discount-label { text-align: center; } }
+  .referral-desc { font-size: 1.1rem; max-width: 600px; margin: 0 auto 24px; line-height: 1.5; text-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+  .referral-desc strong { background: rgba(255, 215, 0, 0.25); padding: 2px 8px; border-radius: 6px; color: #FFD700; }
+  /* was referenced in markup but never defined — now styled */
+  .max-badge { display: inline-flex; align-items: center; gap: 10px; background: rgba(0,0,0,.35); border: 2px solid rgba(255,215,0,.8); border-radius: 999px; padding: 10px 22px; font-weight: 800; font-size: .95rem; margin-bottom: 30px; letter-spacing: .03em; }
+  .max-badge .max-amount { font-family: var(--font-display); font-weight: 900; font-size: 1.6rem; color: #FFD700; text-shadow: 0 0 16px rgba(255,215,0,.7); }
+  .max-badge .max-sub { font-weight: 600; font-size: .8rem; opacity: .85; }
+  .how-it-works { display: flex; align-items: center; justify-content: center; gap: 16px; max-width: 900px; margin: 0 auto 30px; flex-wrap: wrap; }
+  .step { background: rgba(255,255,255,0.95); color: #1A1413; border-radius: 16px; padding: 18px 20px; min-width: 200px; flex: 1; max-width: 240px; box-shadow: 0 8px 24px rgba(0,0,0,0.2); transition: transform 0.3s; }
+  .step:hover { transform: translateY(-4px) scale(1.03); }
+  .step-num { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; background: linear-gradient(135deg, #FF006E, #8338EC); color: white; border-radius: 50%; font-family: var(--font-display); font-weight: 900; font-size: 1.2rem; margin-bottom: 8px; box-shadow: 0 4px 12px rgba(255, 0, 110, 0.4); }
+  .step-text { font-size: 0.95rem; line-height: 1.3; }
+  .step-arrow { font-size: 2rem; font-weight: 900; color: #FFD700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.8); animation: arrow-pulse 1.5s ease-in-out infinite; }
+  @keyframes arrow-pulse { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(6px); } }
+  @media (max-width: 760px) { .step-arrow { transform: rotate(90deg); } @keyframes arrow-pulse { 0%, 100% { transform: rotate(90deg) translateX(0); } 50% { transform: rotate(90deg) translateX(6px); } } }
+  .important-note { background: rgba(0,0,0,0.4); border: 2px dashed #FFD700; border-radius: 12px; padding: 16px 24px; max-width: 650px; margin: 0 auto 32px; font-size: 0.95rem; line-height: 1.45; }
+  .important-note strong { color: #FFD700; }
+  .referral-cta { display: inline-block; background: white; color: #FF006E; font-family: var(--font-display); font-weight: 900; font-size: 1.15rem; padding: 18px 36px; border-radius: 999px; text-decoration: none; box-shadow: 0 10px 30px rgba(0,0,0,0.3); transition: transform 0.2s, box-shadow 0.2s; animation: cta-bounce 2s ease-in-out infinite; }
+  .referral-cta:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 14px 40px rgba(0,0,0,0.4); background: #FFD700; color: #1A1413; }
+  @keyframes cta-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
 
-@media (max-width: 760px) {
-  .intro-banner-inner { flex-direction: column; align-items: flex-start; text-align: left; }
-  .intro-banner .intro-btn { width: 100%; text-align: center; }
-}
-/* REFERRAL DEAL — flashy section */
-.referral-section {
-  background: linear-gradient(135deg, #FF006E 0%, #FB5607 25%, #FFBE0B 50%, #8338EC 75%, #3A86FF 100%);
-  background-size: 300% 300%;
-  animation: gradient-shift 6s ease infinite;
-  padding: 80px 0;
-  position: relative;
-  overflow: hidden;
-  text-align: center;
-  color: white;
-}
-@keyframes gradient-shift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-.referral-section::before {
-  content: ""; position: absolute; inset: 0;
-  background: radial-gradient(circle at 20% 30%, rgba(255,255,255,0.15), transparent 40%),
-              radial-gradient(circle at 80% 70%, rgba(255,255,255,0.1), transparent 40%);
-}
-.referral-inner { position: relative; z-index: 2; }
-
-/* Sparkles */
-.sparkle {
-  position: absolute; font-size: 2rem; z-index: 1;
-  animation: float 4s ease-in-out infinite;
-  filter: drop-shadow(0 0 8px rgba(255,255,255,0.6));
-}
-.sparkle.s1 { top: 8%; left: 8%; animation-delay: 0s; }
-.sparkle.s2 { top: 15%; right: 12%; animation-delay: 0.5s; font-size: 1.5rem; }
-.sparkle.s3 { top: 35%; left: 5%; animation-delay: 1s; }
-.sparkle.s4 { top: 25%; right: 8%; animation-delay: 1.5s; font-size: 1.8rem; }
-.sparkle.s5 { bottom: 30%; left: 10%; animation-delay: 2s; font-size: 1.6rem; }
-.sparkle.s6 { bottom: 20%; right: 15%; animation-delay: 2.5s; }
-.sparkle.s7 { bottom: 10%; left: 20%; animation-delay: 3s; font-size: 1.4rem; }
-.sparkle.s8 { top: 50%; right: 5%; animation-delay: 3.5s; font-size: 1.7rem; }
-@keyframes float {
-  0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.7; }
-  50% { transform: translateY(-20px) rotate(15deg); opacity: 1; }
-}
-
-/* Limited time tag */
-.limited-tag {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: rgba(0,0,0,0.4); color: #FFD700;
-  padding: 8px 18px; border-radius: 999px;
-  font-weight: 800; font-size: 0.9rem;
-  letter-spacing: 0.08em;
-  border: 2px solid #FFD700;
-  margin-bottom: 20px;
-  animation: pulse-tag 1.5s ease-in-out infinite;
-  text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
-}
-@keyframes pulse-tag {
-  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7); }
-  50% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(255, 215, 0, 0); }
-}
-.blink-dot {
-  width: 10px; height: 10px; background: #FF0000;
-  border-radius: 50%;
-  animation: blink 0.8s ease-in-out infinite;
-  box-shadow: 0 0 10px #FF0000;
-}
-@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-
-/* Title with rainbow */
-.referral-title {
-  font-family: var(--font-display);
-  font-weight: 900;
-  font-size: clamp(2.5rem, 8vw, 5rem);
-  line-height: 1; letter-spacing: -0.03em;
-  margin-bottom: 30px;
-  text-shadow: 0 4px 20px rgba(0,0,0,0.3);
-  animation: bounce-title 2s ease-in-out infinite;
-}
-@keyframes bounce-title {
-  0%, 100% { transform: translateY(0) rotate(-1deg); }
-  50% { transform: translateY(-8px) rotate(1deg); }
-}
-.rainbow-text {
-  background: linear-gradient(90deg, #FFFFFF, #FFD700, #FFFFFF, #FFD700);
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shine 2s linear infinite;
-}
-@keyframes shine { to { background-position: 200% center; } }
-
-/* Discount display */
-.referral-discount {
-  display: inline-flex; align-items: center; gap: 24px;
-  background: rgba(0,0,0,0.25);
-  backdrop-filter: blur(10px);
-  border: 3px solid #FFD700;
-  border-radius: 24px;
-  padding: 24px 36px;
-  margin-bottom: 30px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.3), inset 0 0 30px rgba(255,215,0,0.2);
-  animation: glow 2s ease-in-out infinite;
-}
-@keyframes glow {
-  0%, 100% { box-shadow: 0 10px 40px rgba(0,0,0,0.3), inset 0 0 30px rgba(255,215,0,0.2), 0 0 30px rgba(255,215,0,0.4); }
-  50% { box-shadow: 0 10px 40px rgba(0,0,0,0.3), inset 0 0 30px rgba(255,215,0,0.4), 0 0 60px rgba(255,215,0,0.8); }
-}
-.discount-amount {
-  font-family: var(--font-display);
-  font-weight: 900;
-  color: #FFD700;
-  display: flex; align-items: baseline;
-  text-shadow: 0 4px 20px rgba(0,0,0,0.5), 0 0 30px rgba(255,215,0,0.6);
-}
-.discount-amount .dollar { font-size: 2.5rem; }
-.discount-amount .number { font-size: 5rem; line-height: 1; letter-spacing: -0.03em; }
-.discount-label {
-  font-weight: 800; font-size: 1.1rem;
-  text-align: left; line-height: 1.2;
-}
-.discount-label .per-text {
-  font-weight: 500; font-size: 0.85rem;
-  opacity: 0.9;
-}
-@media (max-width: 520px) {
-  .referral-discount { flex-direction: column; gap: 8px; padding: 20px 24px; }
-  .discount-label { text-align: center; }
-}
-
-.referral-desc {
-  font-size: 1.1rem; max-width: 600px;
-  margin: 0 auto 36px; line-height: 1.5;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.3);
-}
-.referral-desc strong {
-  background: rgba(255, 215, 0, 0.25);
-  padding: 2px 8px; border-radius: 6px;
-  color: #FFD700;
-}
-
-/* How it works steps */
-.how-it-works {
-  display: flex; align-items: center; justify-content: center;
-  gap: 16px; max-width: 900px; margin: 0 auto 30px;
-  flex-wrap: wrap;
-}
-.step {
-  background: rgba(255,255,255,0.95); color: #1A1413;
-  border-radius: 16px; padding: 18px 20px;
-  min-width: 200px; flex: 1; max-width: 240px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-  transition: transform 0.3s;
-}
-.step:hover { transform: translateY(-4px) scale(1.03); }
-.step-num {
-  display: inline-flex; align-items: center; justify-content: center;
-  width: 36px; height: 36px;
-  background: linear-gradient(135deg, #FF006E, #8338EC);
-  color: white; border-radius: 50%;
-  font-family: var(--font-display); font-weight: 900;
-  font-size: 1.2rem;
-  margin-bottom: 8px;
-  box-shadow: 0 4px 12px rgba(255, 0, 110, 0.4);
-}
-.step-text { font-size: 0.95rem; line-height: 1.3; }
-.step-arrow {
-  font-size: 2rem; font-weight: 900;
-  color: #FFD700;
-  text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
-  animation: arrow-pulse 1.5s ease-in-out infinite;
-}
-@keyframes arrow-pulse {
-  0%, 100% { transform: translateX(0); }
-  50% { transform: translateX(6px); }
-}
-@media (max-width: 760px) {
-  .step-arrow { transform: rotate(90deg); }
-  @keyframes arrow-pulse {
-    0%, 100% { transform: rotate(90deg) translateX(0); }
-    50% { transform: rotate(90deg) translateX(6px); }
-  }
-}
-
-.important-note {
-  background: rgba(0,0,0,0.4);
-  border: 2px dashed #FFD700;
-  border-radius: 12px;
-  padding: 16px 24px;
-  max-width: 650px; margin: 0 auto 32px;
-  font-size: 0.95rem; line-height: 1.45;
-}
-.important-note strong { color: #FFD700; }
-
-.referral-cta {
-  display: inline-block;
-  background: white; color: #FF006E;
-  font-family: var(--font-display);
-  font-weight: 900; font-size: 1.15rem;
-  padding: 18px 36px; border-radius: 999px;
-  text-decoration: none;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-  transition: transform 0.2s, box-shadow 0.2s;
-  animation: cta-bounce 2s ease-in-out infinite;
-}
-.referral-cta:hover {
-  transform: translateY(-3px) scale(1.05);
-  box-shadow: 0 14px 40px rgba(0,0,0,0.4);
-  background: #FFD700; color: #1A1413;
-}
-@keyframes cta-bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
-}
   /* FOOTER */
   footer { background: var(--tj-ink); color: rgba(255,255,255,0.6); padding: 50px 0 30px; text-align: center; font-size: 0.88rem; }
   footer .brand { color: white; justify-content: center; margin-bottom: 14px; }
@@ -581,9 +450,26 @@
   .hero p.lede { animation-delay: 0.25s; }
   .hero-ctas { animation-delay: 0.4s; }
   .hero-stats { animation-delay: 0.55s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+    html { scroll-behavior: auto; }
+  }
 </style>
 </head>
 <body>
+
+<!-- ===== ANNOUNCEMENT BAR ===== -->
+<div class="announce">
+  <div class="announce-inner">
+    <span class="live"><span class="dot"></span> NOW ENROLLING</span>
+    <span>November cohort — <strong>rolling admission, spots fill as they go</strong></span>
+    <span class="sep">·</span>
+    <span>TJ writing test: <strong>Sat, Jan 9</strong></span>
+    <span class="sep">·</span>
+    <a href="#november">Claim a spot →</a>
+  </div>
+</div>
 
 <!-- NAV -->
 <nav class="nav">
@@ -593,9 +479,10 @@
       <span>The TJ Brothers</span>
     </a>
     <div class="nav-links">
-      <a href="#about-tj">About TJ</a>
+      <a href="#november" class="hot">November Cohort</a>
       <a href="#brothers">Your Tutors</a>
       <a href="#course">The Course</a>
+      <a href="#tutoring">1-on-1</a>
       <a href="#pricing">Pricing</a>
       <a href="https://docs.google.com/forms/d/e/1FAIpQLScmIcqq5hySFBag7DehgIW5nBjbOXDx-warS8GA5MFe7ykb8w/viewform" target="_blank" rel="noopener" class="nav-cta">Sign Up</a>
     </div>
@@ -605,7 +492,7 @@
 <!-- HERO -->
 <header class="hero">
   <div class="hero-inner">
-    <span class="eyebrow"><span class="dot"></span> 2026 Cohorts — Now Enrolling</span>
+    <span class="eyebrow"><span class="dot"></span> November Cohort — Rolling Admission, Enrolling Now</span>
     <h1>
       Get Into <span class="accent">TJ.</span><br>
       Taught by <span class="underline">two brothers</span> who actually did it.
@@ -614,17 +501,17 @@
       Focused prep courses for the Thomas Jefferson High School admissions test — designed and taught by two recent TJ students who took the exam themselves and remember exactly what works.
     </p>
     <div class="hero-ctas">
-      <a href="#pricing" class="btn btn-primary">See All Courses →</a>
-      <a href="#course" class="btn btn-secondary">See What's Inside</a>
+      <a href="#november" class="btn btn-primary">Join the November Cohort →</a>
+      <a href="#tutoring" class="btn btn-secondary">Book 1-on-1 Tutoring</a>
     </div>
     <div class="hero-stats">
       <div class="stat">
-        <div class="num">3</div>
-        <div class="label">Courses for every grade</div>
+        <div class="num" id="statDays">—</div>
+        <div class="label">Days until the TJ writing test</div>
       </div>
       <div class="stat">
-        <div class="num">7–8</div>
-        <div class="label">Weeks in summer cohort</div>
+        <div class="num">6</div>
+        <div class="label">Sessions in the November cohort</div>
       </div>
       <div class="stat">
         <div class="num">2</div>
@@ -638,17 +525,53 @@
   </div>
 </header>
 
-<!-- INTRO CLASS BANNER (TOP) -->
-<div class="intro-banner">
-  <div class="intro-banner-inner">
-    <div class="intro-banner-text">
-      <div class="intro-banner-tag">🎁 Free</div>
-      <h4>Try our first class — completely free.</h4>
-      <p>Sit in on the intro session. No payment, no commitment — just bring your email.</p>
+<!-- ===== NOVEMBER COHORT — BIG FEATURE ===== -->
+<section id="november" class="nov">
+  <div class="container nov-inner">
+    <span class="nov-flag"><span class="pip"></span> Enrolling now · Rolling admission</span>
+    <h2>The final six weeks<br>before <em>test day.</em></h2>
+    <p class="nov-lede">
+      Six weekly sessions built for one thing: walking into the January writing test able to plan, write, and finish inside the clock. Our last class lands <strong>six days before the test</strong> — not six weeks.
+    </p>
+
+    <div class="countdown" id="countdown">
+      <div class="cd-unit"><div class="v" id="cdD">--</div><div class="k">Days</div></div>
+      <div class="cd-unit"><div class="v" id="cdH">--</div><div class="k">Hours</div></div>
+      <div class="cd-unit"><div class="v" id="cdM">--</div><div class="k">Minutes</div></div>
+      <div class="cd-caption" id="cdCaption">until the FCPS application window closes (Oct 30)</div>
     </div>
-    <a href="https://docs.google.com/forms/d/1-2q-grVcZy5i22RtQu_Pfn4P0lsElSFfo1Bwb6h7AOk/edit" target="_blank" rel="noopener" class="intro-btn">Get the Free Class →</a>
+
+    <div class="nov-grid">
+      <div>
+        <ul class="nov-points">
+          <li><span class="ic">1</span><span><strong>Rolling admission.</strong> We take students as they sign up and close the cohort when it's full — no waiting for a start date to be announced.</span></li>
+          <li><span class="ic">2</span><span><strong>Built around the real deadlines.</strong> Applications close <strong>Oct 30</strong>. The writing test is <strong>Sat, Jan 9</strong>. This course sits in the gap between them.</span></li>
+          <li><span class="ic">3</span><span><strong>SPS and PSE, both.</strong> The Student Portrait Sheet and the Problem-Solving Essay — the two pieces you can actually train for.</span></li>
+          <li><span class="ic">4</span><span><strong>Every draft read.</strong> Small group, written feedback on what you turn in, and Q&amp;A access right through test day.</span></li>
+          <li><span class="ic">5</span><span><strong>One more full mock.</strong> Timed, reviewed, and close enough to test day that the fixes still stick.</span></li>
+        </ul>
+        <div class="nov-ctas">
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLScmIcqq5hySFBag7DehgIW5nBjbOXDx-warS8GA5MFe7ykb8w/viewform" target="_blank" rel="noopener" class="btn btn-gold">Claim a Spot — $150 →</a>
+          <a href="#enroll" class="btn btn-ghost-light">How enrollment works</a>
+        </div>
+        <p class="nov-note">Sign up via the form, then send payment by Zelle. We confirm within 24 hours.</p>
+      </div>
+
+      <div class="nov-card">
+        <h4>The six sessions</h4>
+        <ul class="sched">
+          <li><span class="n">1</span> Sunday, Nov 29</li>
+          <li><span class="n">2</span> Sunday, Dec 6</li>
+          <li><span class="n">3</span> Sunday, Dec 13</li>
+          <li><span class="n">4</span> Sunday, Dec 20</li>
+          <li><span class="n">5</span> Sunday, Dec 27</li>
+          <li class="final"><span class="n">6</span> Sunday, Jan 3 <span class="tag">Final</span></li>
+        </ul>
+        <div class="testday">🎯 TJ writing test — Saturday, January 9</div>
+      </div>
+    </div>
   </div>
-</div>
+</section>
 
 <!-- ABOUT TJ -->
 <section id="about-tj" class="about-tj">
@@ -761,9 +684,9 @@
     </p>
     <div class="schedule-grid">
       <div class="schedule-card">
-        <div class="num">2×</div>
-        <h4>Sessions per week</h4>
-        <p>Summer cohort runs <strong>Tuesday &amp; Thursday, 7:00–8:00 PM</strong>. Live, interactive, and recorded if you miss one.</p>
+        <div class="num">1×</div>
+        <h4>Session per week</h4>
+        <p>The November cohort runs <strong>Sundays</strong> from Nov 29 through Jan 3. Live, interactive, and recorded if you miss one.</p>
       </div>
       <div class="schedule-card">
         <div class="num">3</div>
@@ -774,6 +697,69 @@
         <div class="num">∞</div>
         <h4>Q&amp;A access</h4>
         <p>Stuck on a problem mid-week? Message us. Both tutors stay reachable between sessions for quick help.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 1-ON-1 TUTORING ===== -->
+<section id="tutoring" class="oneone">
+  <div class="container">
+    <div class="oo-head">
+      <div>
+        <div class="section-eyebrow">One-on-one</div>
+        <h2 class="section-title" style="margin-bottom:12px;">Book a private session.</h2>
+        <p style="color:var(--tj-ink-soft); font-size:1.05rem; max-width:520px;">
+          Want to work through your own essay, your own weak spots, your own pace? Pick a day and a time below and we'll confirm it by email.
+        </p>
+      </div>
+      <div class="oo-rate">
+        <div class="amt">$30</div>
+        <div class="per">PER HOUR</div>
+      </div>
+    </div>
+
+    <div class="oo-grid">
+      <!-- CALENDAR -->
+      <div class="cal-card">
+        <div class="cal-top">
+          <div class="cal-month" id="calMonth">—</div>
+          <div class="cal-nav">
+            <button type="button" id="calPrev" aria-label="Previous month">‹</button>
+            <button type="button" id="calNext" aria-label="Next month">›</button>
+          </div>
+        </div>
+        <div class="cal-dow"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div>
+        <div class="cal-grid" id="calGrid"></div>
+        <div class="cal-legend">
+          <span><i style="background:var(--tj-cream); border:1px solid var(--tj-line);"></i>Available</span>
+          <span><i style="background:#F2EEE7;"></i>Unavailable</span>
+          <span><i style="background:var(--tj-red);"></i>Selected</span>
+        </div>
+      </div>
+
+      <!-- SLOTS + SELECTION -->
+      <div class="slot-card">
+        <h4 id="slotTitle">Pick a date</h4>
+        <p class="hint" id="slotHint">Choose a day on the calendar to see open times.</p>
+        <div class="slots" id="slots"></div>
+
+        <div class="picked" id="picked" hidden>
+          <div class="lbl">Your requested session</div>
+          <div class="val" id="pickedVal">—</div>
+          <div class="cost">1 hour · $30 · we confirm by email within 24 hours</div>
+          <div class="picked-actions">
+            <a class="btn btn-navy btn-sm" id="pickedGo" href="#" target="_blank" rel="noopener">Continue to booking form →</a>
+            <button class="btn btn-copy btn-sm" type="button" id="pickedCopy">Copy details</button>
+          </div>
+        </div>
+
+        <p class="oo-note">
+          <strong>Weeknights 5:30 and 7:30 PM · Saturdays 9 AM – 12 PM · Eastern time.</strong><br>
+          Your date and time carry over to the form — you just add your email. Requesting a slot
+          doesn't charge you; we confirm availability first, then send Zelle details. Need a time
+          you don't see? Email <strong>wyattnie0827@gmail.com</strong>.
+        </p>
       </div>
     </div>
   </div>
@@ -790,8 +776,8 @@
 
     <div class="pricing-grid">
 
-      <!-- TIER 1: Starting Your TJ Journey -->
-      <div class="pricing-card tier-journey">
+      <!-- TIER 1 -->
+      <div class="pricing-card tier-journey is-later">
         <span class="pricing-badge">7th grade &amp; below</span>
         <h3>Starting Your TJ Journey</h3>
         <div class="grade-tag">Early prep · Build the foundation</div>
@@ -812,34 +798,11 @@
         <div class="returner-note">💡 Coming back for the 8th grade course later? Mention it — returning students get priority enrollment.</div>
       </div>
 
-      <!-- TIER 2: Locking In on TJ (FEATURED) -->
-      <div class="pricing-card tier-locking featured">
-        <span class="pricing-badge">⭐ Most popular · Rising 8th</span>
-        <h3>Locking In on TJ</h3>
-        <div class="grade-tag">Summer cohort · Test-year deep dive</div>
-        <p class="desc">The full summer prep course for rising 8th graders. Comprehensive coverage of every section of the TJ test, plus mock tests and essay coaching.</p>
-        <div class="price">
-          <span class="dollar">$</span>
-          <span class="amount">400</span>
-          <span class="per">/ student</span>
-        </div>
-        <ul class="pricing-list">
-          <li>14+ live sessions over 7–8 weeks</li>
-          <li>Tuesday &amp; Thursday, 2–3 PM (summer)</li>
-          <li>Full Quant + Reading/Writing coverage</li>
-          <li>Problem-solving essay coaching</li>
-          <li>Timed mock tests with review</li>
-          <li>Direct Q&amp;A access between classes</li>
-          <li>Taught by two recent TJ students</li>
-        </ul>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLScmIcqq5hySFBag7DehgIW5nBjbOXDx-warS8GA5MFe7ykb8w/viewform" target="_blank" rel="noopener" class="btn btn-primary">Sign Up →</a>
-      </div>
-
-      <!-- TIER 3: The Final Showdown -->
-      <div class="pricing-card tier-showdown">
-        <span class="pricing-badge">Late Nov · 8th grade only</span>
+      <!-- TIER 3 — NOVEMBER, NOW FEATURED -->
+      <div class="pricing-card tier-showdown featured">
+        <span class="pricing-badge">🔥 Enrolling now · 8th grade</span>
         <h3>The Final Showdown</h3>
-        <div class="grade-tag">Pre-test sprint · 6 sessions</div>
+        <div class="grade-tag">Nov 29 – Jan 3 · 6 sessions · Test is Jan 9</div>
         <p class="desc">A focused sprint from late November straight into the TJ test. Built for 8th graders who want final polish, time strategies, and one more mock before test day.</p>
         <div class="price">
           <span class="dollar">$</span>
@@ -848,13 +811,38 @@
         </div>
         <ul class="pricing-list">
           <li>6 live sessions before test day</li>
+          <li>Final class lands 6 days before the test</li>
           <li>1 additional full-length mock test</li>
           <li>Pre-made SPSEs to morph on test day</li>
           <li>Time-management &amp; pacing techniques</li>
           <li>Last-minute strategy &amp; question review</li>
           <li>Direct Q&amp;A access through test day</li>
         </ul>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLScmIcqq5hySFBag7DehgIW5nBjbOXDx-warS8GA5MFe7ykb8w/viewform" target="_blank" rel="noopener" class="btn btn-primary">Sign Up →</a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLScmIcqq5hySFBag7DehgIW5nBjbOXDx-warS8GA5MFe7ykb8w/viewform" target="_blank" rel="noopener" class="btn btn-primary">Claim a Spot →</a>
+        <div class="returner-note">⏳ Rolling admission — we close the cohort once it fills.</div>
+      </div>
+
+      <!-- TIER 2 — SUMMER, NEXT CYCLE -->
+      <div class="pricing-card tier-locking is-later">
+        <span class="pricing-badge">Summer 2027 · Rising 8th</span>
+        <h3>Locking In on TJ</h3>
+        <div class="grade-tag">Summer cohort · Test-year deep dive</div>
+        <p class="desc">The full summer prep course for rising 8th graders. Comprehensive coverage of every section of the TJ test, plus mock tests and essay coaching. Enrolling in spring for next summer.</p>
+        <div class="price">
+          <span class="dollar">$</span>
+          <span class="amount">400</span>
+          <span class="per">/ student</span>
+        </div>
+        <ul class="pricing-list">
+          <li>14+ live sessions over 7–8 weeks</li>
+          <li>Twice weekly through the summer</li>
+          <li>Full SPS + PSE coverage</li>
+          <li>Problem-solving essay coaching</li>
+          <li>Timed mock tests with review</li>
+          <li>Direct Q&amp;A access between classes</li>
+          <li>Taught by two recent TJ students</li>
+        </ul>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLScmIcqq5hySFBag7DehgIW5nBjbOXDx-warS8GA5MFe7ykb8w/viewform" target="_blank" rel="noopener" class="btn btn-secondary">Join the Waitlist →</a>
       </div>
 
     </div>
@@ -870,7 +858,6 @@
       Two quick steps: sign up via the form, then send payment via Zelle. No platform fees, no extra charges.
     </p>
 
-    <!-- STEP 1: Google Form -->
     <div class="signup-cta-box">
       <h3>📝 Step 1: Sign up via Google Form</h3>
       <p>Tell us your student's name, grade, and which course you're enrolling in.</p>
@@ -879,7 +866,6 @@
 
     <div class="step-divider">Then</div>
 
-    <!-- STEP 2: Zelle Payment -->
     <div class="payment-box">
       <h3>💸 Step 2: Pay via Zelle</h3>
       <p>Send the enrollment fee for your chosen course to the Zelle account below.</p>
@@ -887,7 +873,7 @@
         <div><span class="label">Zelle Phone:</span><span class="val">703-930-3774</span></div>
         <div><span class="label">Recipient name:</span><span class="val">Nathan Wang</span></div>
         <div><span class="label">Memo:</span><span class="val">[Course Name] — [Student First Name]</span></div>
-        <div><span class="label">Amount:</span><span class="val">$200 / $400 / $150</span></div>
+        <div><span class="label">Amount:</span><span class="val">$200 / $400 / $150 · 1-on-1 $30/hr</span></div>
       </div>
       <p style="margin-top: 22px; font-size: 0.92rem;">
         Once both steps are done, we'll confirm your spot and send the first class details within 24 hours. Questions? Email us at <strong>wyattnie0827@gmail.com</strong> or <strong>nathanwang0817@gmail.com</strong>.
@@ -905,9 +891,17 @@
       The stuff parents and students ask us most.
     </p>
     <div class="faq-list">
+      <details open>
+        <summary>When does the November cohort start, and can I still join?</summary>
+        <div>The six sessions run <strong>Sundays, Nov 29 through Jan 3</strong>, finishing six days before the <strong>Jan 9</strong> writing test. Admission is rolling — we take students as they sign up and close the cohort once it's full. If you're reading this and the sign-up button is still live, there's still room.</div>
+      </details>
+      <details>
+        <summary>How does 1-on-1 tutoring work?</summary>
+        <div>Private sessions are <strong>$30/hour</strong>. Pick a day and time on the calendar in the <a href="#tutoring" style="color:var(--tj-red); font-weight:600;">1-on-1 section</a> and send the request — we'll confirm availability by email within 24 hours, then send Zelle details. Sessions can cover anything: your own SPS drafts, PSE practice, or whatever you're stuck on.</div>
+      </details>
       <details>
         <summary>Which course is right for my student?</summary>
-        <div>If your student is in 7th grade or below, start with <strong>Starting Your TJ Journey</strong>. If they're a rising 8th grader prepping for next year's TJ test, <strong>Locking In on TJ</strong> is the main summer course. If they're already an 8th grader heading into test season, <strong>The Final Showdown</strong> is a pre-test sprint starting late November.</div>
+        <div>If your student is in 7th grade or below, start with <strong>Starting Your TJ Journey</strong>. If they're an 8th grader taking the test this January, <strong>The Final Showdown</strong> is the one enrolling now. <strong>Locking In on TJ</strong> is the full summer course and opens again in spring for summer 2027.</div>
       </details>
       <details>
         <summary>Can my student take more than one course?</summary>
@@ -940,36 +934,14 @@
 <!-- FINAL CTA -->
 <section class="final-cta">
   <div class="final-cta-inner container">
-    <h2>Three courses. One destination: TJ.</h2>
-    <p>Whatever grade your student is in, we've got the right course to help them get there — taught by two brothers who recently lived it.</p>
-    <a href="https://docs.google.com/forms/d/e/1FAIpQLScmIcqq5hySFBag7DehgIW5nBjbOXDx-warS8GA5MFe7ykb8w/viewform" target="_blank" rel="noopener" class="btn btn-primary">Sign Up Now</a>
-  </div>
-</section>
-<!-- INTRO CLASS SECTION (BOTTOM) -->
-<section class="intro-section">
-  <div class="container">
-    <div class="intro-box">
-      <div class="intro-eyebrow">
-        <span class="icon">🎁</span> Free Intro Class · No Commitment
-      </div>
-      <h2>Not sure yet? <span class="highlight">Sit in on our first class — free.</span></h2>
-      <p class="intro-desc">
-        Want a feel for how we teach before you commit? Drop your email and we'll send you the link to our free introductory session. See the teaching style, meet the brothers, and decide from there.
-      </p>
-      <div class="intro-features">
-        <div class="intro-feat"><span class="check">✓</span> 100% free</div>
-        <div class="intro-feat"><span class="check">✓</span> No payment info</div>
-        <div class="intro-feat"><span class="check">✓</span> Just your email</div>
-      </div>
-      <a href="https://docs.google.com/forms/d/1-2q-grVcZy5i22RtQu_Pfn4P0lsElSFfo1Bwb6h7AOk/edit" target="_blank" rel="noopener" class="intro-cta">📩 Sign Up for the Free Class →</a>
-      <div class="small-note">We'll email you the class link 24 hours before. Spam-free, promise.</div>
-    </div>
+    <h2>Six weeks left. Then test day.</h2>
+    <p>The November cohort is enrolling now on rolling admission, and the last class lands six days before the January 9 writing test.</p>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLScmIcqq5hySFBag7DehgIW5nBjbOXDx-warS8GA5MFe7ykb8w/viewform" target="_blank" rel="noopener" class="btn btn-primary">Claim Your Spot</a>
   </div>
 </section>
 
 <!-- ========== REFERRAL DEAL ========== -->
 <section class="referral-section">
-  <!-- Floating sparkles -->
   <div class="sparkle s1">✨</div>
   <div class="sparkle s2">⭐</div>
   <div class="sparkle s3">💫</div>
@@ -1032,6 +1004,7 @@
     </a>
   </div>
 </section>
+
 <!-- FOOTER -->
 <footer>
   <div class="container">
@@ -1043,6 +1016,238 @@
     <p class="small">© 2026 The TJ Brothers · Not affiliated with Thomas Jefferson High School for Science &amp; Technology or Fairfax County Public Schools.</p>
   </div>
 </footer>
+
+<script>
+/* ==========================================================
+   1. COUNTDOWN — application deadline, then test day
+   ========================================================== */
+(function () {
+  var APP_CLOSE = new Date(2026, 9, 30, 16, 0, 0);   // Oct 30, 2026, 4:00 PM
+  var TEST_DAY  = new Date(2027, 0, 9, 8, 0, 0);     // Jan 9, 2027, 8:00 AM
+
+  var dEl = document.getElementById('cdD'),
+      hEl = document.getElementById('cdH'),
+      mEl = document.getElementById('cdM'),
+      cap = document.getElementById('cdCaption'),
+      statDays = document.getElementById('statDays');
+
+  function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+  function tick() {
+    var now = new Date();
+    var target, label;
+    if (now < APP_CLOSE) {
+      target = APP_CLOSE;
+      label = 'until the FCPS application window closes (Oct 30)';
+    } else {
+      target = TEST_DAY;
+      label = 'until the TJ writing test (Sat, Jan 9)';
+    }
+    var ms = target - now;
+    if (ms < 0) ms = 0;
+    var days = Math.floor(ms / 86400000);
+    var hrs  = Math.floor(ms % 86400000 / 3600000);
+    var mins = Math.floor(ms % 3600000 / 60000);
+    if (dEl) dEl.textContent = days;
+    if (hEl) hEl.textContent = pad(hrs);
+    if (mEl) mEl.textContent = pad(mins);
+    if (cap) cap.textContent = label;
+
+    if (statDays) {
+      var td = Math.max(0, Math.ceil((TEST_DAY - now) / 86400000));
+      statDays.textContent = td;
+    }
+  }
+  tick();
+  setInterval(tick, 30000);
+})();
+
+/* ==========================================================
+   2. 1-ON-1 BOOKING CALENDAR
+   ----------------------------------------------------------
+   No backend: picking a slot fills in a request you send via
+   the Google Form. Availability below is a simple rule set —
+   edit AVAILABILITY to change which days/times are offered.
+   ========================================================== */
+(function () {
+  // ---- Fallback form (used if PREFILL_URL below is left blank) ----
+  var FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScmIcqq5hySFBag7DehgIW5nBjbOXDx-warS8GA5MFe7ykb8w/viewform';
+
+  /* ==========================================================
+     PREFILL_URL — paste ONE link here and the form arrives
+     with the date and time already filled in.
+
+     How to get it (about two minutes):
+       1. Make a Google Form for 1-on-1 bookings with two
+          questions: "Session requested" (short answer) and
+          "Your email" (short answer).
+       2. In the form editor: ⋮ menu → "Get pre-filled link".
+       3. In the "Session requested" box, type exactly:  SESSION
+          Leave the email box empty. Click "Get link" → "COPY LINK".
+       4. Paste that whole URL between the quotes below.
+
+     The script swaps SESSION for whatever the visitor picked.
+     Leave it as '' and the button just opens FORM_URL instead.
+     ========================================================== */
+  var PREFILL_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSeh7AE9TOuuLi6tPkFYBkzpCpIMNILPJJlLLibqupxkQJgJAA/viewform?usp=pp_url&entry.389963067=SESSION';
+
+  var RATE = 30;
+  var BOOK_AHEAD_DAYS = 60;   // how far out people may book
+  var MIN_NOTICE_DAYS = 1;    // no same-day bookings
+
+  // 0 = Sunday … 6 = Saturday. Empty array = unavailable that day.
+  // Each entry is one 1-hour session, written exactly as it should display.
+  var WEEKNIGHT = ['5:30 – 6:30 PM', '7:30 – 8:30 PM'];
+  var AVAILABILITY = {
+    0: [],                                    // Sun — closed
+    1: WEEKNIGHT,                             // Mon
+    2: WEEKNIGHT,                             // Tue
+    3: WEEKNIGHT,                             // Wed
+    4: WEEKNIGHT,                             // Thu
+    5: WEEKNIGHT,                             // Fri
+    6: ['9:00 – 10:00 AM', '10:00 – 11:00 AM', '11:00 AM – 12:00 PM']  // Sat
+  };
+
+  var MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var DAYNAMES = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+
+  var grid = document.getElementById('calGrid');
+  if (!grid) return;
+  var monthLabel = document.getElementById('calMonth');
+  var prevBtn = document.getElementById('calPrev');
+  var nextBtn = document.getElementById('calNext');
+  var slotsEl = document.getElementById('slots');
+  var slotTitle = document.getElementById('slotTitle');
+  var slotHint = document.getElementById('slotHint');
+  var picked = document.getElementById('picked');
+  var pickedVal = document.getElementById('pickedVal');
+  var pickedGo = document.getElementById('pickedGo');
+  var pickedCopy = document.getElementById('pickedCopy');
+
+  var today = new Date(); today.setHours(0,0,0,0);
+  var minDate = new Date(today); minDate.setDate(minDate.getDate() + MIN_NOTICE_DAYS);
+  var maxDate = new Date(today); maxDate.setDate(maxDate.getDate() + BOOK_AHEAD_DAYS);
+
+  var view = new Date(today.getFullYear(), today.getMonth(), 1);
+  var selDate = null, selTime = null;
+
+  function sameDay(a, b) {
+    return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+  }
+  function bookable(d) {
+    if (d < minDate || d > maxDate) return false;
+    return (AVAILABILITY[d.getDay()] || []).length > 0;
+  }
+
+  function render() {
+    monthLabel.textContent = MONTHS[view.getMonth()] + ' ' + view.getFullYear();
+    grid.innerHTML = '';
+
+    var firstDow = new Date(view.getFullYear(), view.getMonth(), 1).getDay();
+    var daysInMonth = new Date(view.getFullYear(), view.getMonth() + 1, 0).getDate();
+
+    for (var i = 0; i < firstDow; i++) {
+      var blank = document.createElement('div');
+      blank.className = 'cal-day is-empty';
+      grid.appendChild(blank);
+    }
+
+    for (var day = 1; day <= daysInMonth; day++) {
+      var d = new Date(view.getFullYear(), view.getMonth(), day);
+      var cell = document.createElement('button');
+      cell.type = 'button';
+      cell.className = 'cal-day';
+      cell.textContent = day;
+
+      if (!bookable(d)) {
+        cell.classList.add('is-off');
+        cell.disabled = true;
+        cell.setAttribute('aria-label', DAYNAMES[d.getDay()] + ' ' + MONTHS[d.getMonth()] + ' ' + day + ' — unavailable');
+      } else {
+        var pip = document.createElement('span');
+        pip.className = 'pipdot';
+        cell.appendChild(pip);
+        cell.setAttribute('aria-label', DAYNAMES[d.getDay()] + ' ' + MONTHS[d.getMonth()] + ' ' + day + ' — available');
+        (function (dd) {
+          cell.addEventListener('click', function () { selectDate(dd); });
+        })(d);
+      }
+      if (sameDay(d, today)) cell.classList.add('is-today');
+      if (selDate && sameDay(d, selDate)) cell.classList.add('is-sel');
+      grid.appendChild(cell);
+    }
+
+    var firstOfView = new Date(view.getFullYear(), view.getMonth(), 1);
+    prevBtn.disabled = firstOfView <= new Date(today.getFullYear(), today.getMonth(), 1);
+    var lastOfView = new Date(view.getFullYear(), view.getMonth() + 1, 0);
+    nextBtn.disabled = lastOfView >= maxDate;
+  }
+
+  function fmtDate(d) {
+    return DAYNAMES[d.getDay()] + ', ' + MONTHS[d.getMonth()] + ' ' + d.getDate();
+  }
+
+  function selectDate(d) {
+    selDate = d; selTime = null;
+    picked.hidden = true;
+    slotTitle.textContent = fmtDate(d);
+    slotHint.textContent = 'Each session runs one hour.';
+    slotsEl.innerHTML = '';
+    (AVAILABILITY[d.getDay()] || []).forEach(function (t) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'slot';
+      b.textContent = t;
+      b.addEventListener('click', function () {
+        selTime = t;
+        Array.prototype.forEach.call(slotsEl.children, function (c) { c.classList.remove('sel'); });
+        b.classList.add('sel');
+        showPicked();
+      });
+      slotsEl.appendChild(b);
+    });
+    render();
+  }
+
+  function sessionText() {
+    return fmtDate(selDate) + ', ' + selTime + ' ET';
+  }
+  function detailText() {
+    return '1-on-1 tutoring request — ' + sessionText() + ' (1 hour, $' + RATE + ')';
+  }
+  function formLink() {
+    if (!PREFILL_URL) return FORM_URL;
+    // Google encodes the sample answer in the link; swap it for the real pick.
+    return PREFILL_URL.replace(/SESSION/g, encodeURIComponent(sessionText()));
+  }
+
+  function showPicked() {
+    pickedVal.textContent = sessionText();
+    pickedGo.href = formLink();
+    picked.hidden = false;
+    picked.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  pickedCopy.addEventListener('click', function () {
+    var txt = detailText();
+    var done = function () {
+      var old = pickedCopy.textContent;
+      pickedCopy.textContent = 'Copied ✓';
+      setTimeout(function () { pickedCopy.textContent = old; }, 1800);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(txt).then(done, function () { window.prompt('Copy this:', txt); });
+    } else {
+      window.prompt('Copy this:', txt);
+    }
+  });
+
+  prevBtn.addEventListener('click', function () { view.setMonth(view.getMonth() - 1); render(); });
+  nextBtn.addEventListener('click', function () { view.setMonth(view.getMonth() + 1); render(); });
+
+  render();
+})();
+</script>
 
 </body>
 </html>
