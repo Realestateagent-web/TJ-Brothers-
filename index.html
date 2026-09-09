@@ -335,6 +335,11 @@
   }
   .slot:hover { border-color: var(--tj-navy); transform: translateY(-2px); }
   .slot.sel { background: var(--tj-navy); color: #fff; border-color: var(--tj-navy); }
+  .slot.taken { opacity: .45; background: #F2EEE7; color: #8C837A; cursor: not-allowed; text-decoration: line-through; }
+  .slot.taken:hover { transform: none; border-color: var(--tj-line); }
+  .avail-status { display: inline-flex; align-items: center; gap: 7px; font-size: .76rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--tj-ink-soft); margin-bottom: 14px; }
+  .avail-status .sd { width: 8px; height: 8px; border-radius: 50%; background: #C9C1B6; }
+  .avail-status.live .sd { background: #1A7A45; box-shadow: 0 0 0 3px rgba(26,122,69,.15); }
   .picked {
     margin-top: 18px; padding: 16px; border-radius: 12px;
     background: #F0F5FF; border: 1px dashed var(--tj-navy);
@@ -740,6 +745,7 @@
 
       <!-- SLOTS + SELECTION -->
       <div class="slot-card">
+        <div class="avail-status" id="availStatus"><span class="sd"></span><span id="availText">Loading availability…</span></div>
         <h4 id="slotTitle">Pick a date</h4>
         <p class="hint" id="slotHint">Choose a day on the calendar to see open times.</p>
         <div class="slots" id="slots"></div>
@@ -1089,7 +1095,36 @@
      The script swaps SESSION for whatever the visitor picked.
      Leave it as '' and the button just opens FORM_URL instead.
      ========================================================== */
-  var PREFILL_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSeh7AE9TOuuLi6tPkFYBkzpCpIMNILPJJlLLibqupxkQJgJAA/viewform?usp=pp_url&entry.389963067=SESSION';
+  var PREFILL_URL = '';
+
+  /* ==========================================================
+     BOOKED_CSV — makes taken slots disappear automatically.
+
+     Your booking form already writes every response into a
+     Google Sheet. We publish ONLY the session column so this
+     page can read which slots are gone.
+
+       1. Open the form's responses spreadsheet.
+       2. Add a new tab. Name it: Booked
+       3. In cell A1 of that tab put (adjust the tab name and
+          column letter to match where "Session requested" lands):
+              ={'Form Responses 1'!B2:B}
+       4. File → Share → Publish to web
+          → choose the "Booked" sheet, format "Comma-separated values"
+          → Publish, then copy the link.
+       5. Paste that link between the quotes below.
+
+     ⚠️ Publish the Booked tab ONLY — never the whole spreadsheet.
+     The responses tab holds people's email addresses, and
+     publishing it would put them on the open internet.
+
+     Leave '' and every slot simply shows as available.
+     ========================================================== */
+  var BOOKED_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQfR_7ZINU5E5AjpRL1nU_zLLp3nUw8JNt69xvTfKHS3klFEI7CLlaVtH6h4ce5Am38Ywa-yyhsKwyV/pubhtml?gid=1660164360&single=true';
+
+  // Slots you booked yourself (phone, email, whatever). Same wording
+  // the page shows, e.g. 'Saturday, September 12, 9:00 - 10:00 AM ET'
+  var BOOKED_MANUAL = [];
 
   var RATE = 30;
   var BOOK_AHEAD_DAYS = 60;   // how far out people may book
@@ -1131,12 +1166,83 @@
   var view = new Date(today.getFullYear(), today.getMonth(), 1);
   var selDate = null, selTime = null;
 
+  var BOOKED = {};   // normalised key -> true
+
+  function norm(v) {
+    return String(v).replace(/[\u2013\u2014]/g, '-').replace(/\s+/g, ' ').trim().toLowerCase();
+  }
+  function slotKey(d, t) { return norm(fmtDate(d) + ', ' + t + ' ET'); }
+  function isBooked(d, t) { return BOOKED[slotKey(d, t)] === true; }
+  function dayFull(d) {
+    var list = AVAILABILITY[d.getDay()] || [];
+    if (!list.length) return false;
+    for (var i = 0; i < list.length; i++) { if (!isBooked(d, list[i])) return false; }
+    return true;
+  }
+
+  // first field of a CSV row, handling quoted values that contain commas
+  function firstField(line) {
+    line = line.replace(/\r$/, '');
+    if (!line) return '';
+    if (line.charAt(0) === '"') {
+      var out = '', i = 1;
+      while (i < line.length) {
+        if (line.charAt(i) === '"') {
+          if (line.charAt(i + 1) === '"') { out += '"'; i += 2; continue; }
+          break;
+        }
+        out += line.charAt(i); i++;
+      }
+      return out;
+    }
+    return line.split(',')[0];
+  }
+
+  function setStatus(live, text) {
+    var box = document.getElementById('availStatus');
+    var txt = document.getElementById('availText');
+    if (!box || !txt) return;
+    box.classList.toggle('live', !!live);
+    txt.textContent = text;
+  }
+
+  function loadBooked() {
+    BOOKED = {};
+    for (var i = 0; i < BOOKED_MANUAL.length; i++) BOOKED[norm(BOOKED_MANUAL[i])] = true;
+
+    if (!BOOKED_CSV) {
+      setStatus(false, 'Showing all times');
+      render();
+      return;
+    }
+    var url = BOOKED_CSV + (BOOKED_CSV.indexOf('?') > -1 ? '&' : '?') + 'cb=' + Date.now();
+    fetch(url, { cache: 'no-store' })
+      .then(function (r) { if (!r.ok) throw new Error('http ' + r.status); return r.text(); })
+      .then(function (txt) {
+        var rows = txt.split('\n'), n = 0;
+        for (var i = 0; i < rows.length; i++) {
+          var v = firstField(rows[i]);
+          if (!v) continue;
+          var k = norm(v);
+          if (k === 'session requested' || k === 'timestamp') continue;  // header row
+          if (!BOOKED[k]) { BOOKED[k] = true; n++; }
+        }
+        setStatus(true, 'Live availability · ' + n + ' slot' + (n === 1 ? '' : 's') + ' taken');
+        render();
+      })
+      .catch(function () {
+        setStatus(false, 'Showing all times');
+        render();
+      });
+  }
+
   function sameDay(a, b) {
     return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
   }
   function bookable(d) {
     if (d < minDate || d > maxDate) return false;
-    return (AVAILABILITY[d.getDay()] || []).length > 0;
+    if (!(AVAILABILITY[d.getDay()] || []).length) return false;
+    return !dayFull(d);
   }
 
   function render() {
@@ -1196,14 +1302,21 @@
     (AVAILABILITY[d.getDay()] || []).forEach(function (t) {
       var b = document.createElement('button');
       b.type = 'button';
-      b.className = 'slot';
       b.textContent = t;
-      b.addEventListener('click', function () {
-        selTime = t;
-        Array.prototype.forEach.call(slotsEl.children, function (c) { c.classList.remove('sel'); });
-        b.classList.add('sel');
-        showPicked();
-      });
+      if (isBooked(d, t)) {
+        b.className = 'slot taken';
+        b.disabled = true;
+        b.title = 'Already booked';
+        b.setAttribute('aria-label', t + ' — already booked');
+      } else {
+        b.className = 'slot';
+        b.addEventListener('click', function () {
+          selTime = t;
+          Array.prototype.forEach.call(slotsEl.children, function (c) { c.classList.remove('sel'); });
+          b.classList.add('sel');
+          showPicked();
+        });
+      }
       slotsEl.appendChild(b);
     });
     render();
@@ -1245,7 +1358,11 @@
   prevBtn.addEventListener('click', function () { view.setMonth(view.getMonth() - 1); render(); });
   nextBtn.addEventListener('click', function () { view.setMonth(view.getMonth() + 1); render(); });
 
-  render();
+  loadBooked();
+  // re-check when someone comes back to the tab after filling the form
+  document.addEventListener('visibilitychange', function () {
+    if (!document.hidden) loadBooked();
+  });
 })();
 </script>
 
