@@ -1028,110 +1028,76 @@
    1. COUNTDOWN — application deadline, then test day
    ========================================================== */
 (function () {
-  var APP_CLOSE = new Date(2026, 9, 30, 16, 0, 0);   // Oct 30, 2026, 4:00 PM
-  var TEST_DAY  = new Date(2027, 0, 9, 8, 0, 0);     // Jan 9, 2027, 8:00 AM
+  function startCountdown() {
+    var APP_CLOSE = new Date(2026, 9, 30, 16, 0, 0);   // Oct 30, 2026, 4:00 PM
+    var TEST_DAY  = new Date(2027, 0, 9, 8, 0, 0);     // Jan 9, 2027, 8:00 AM
 
-  var dEl = document.getElementById('cdD'),
-      hEl = document.getElementById('cdH'),
-      mEl = document.getElementById('cdM'),
-      cap = document.getElementById('cdCaption'),
-      statDays = document.getElementById('statDays');
+    var dEl = document.getElementById('cdD'),
+        hEl = document.getElementById('cdH'),
+        mEl = document.getElementById('cdM'),
+        cap = document.getElementById('cdCaption'),
+        statDays = document.getElementById('statDays');
 
-  function pad(n) { return n < 10 ? '0' + n : '' + n; }
+    function pad(n) { return n < 10 ? '0' + n : '' + n; }
 
-  function tick() {
-    var now = new Date();
-    var target, label;
-    if (now < APP_CLOSE) {
-      target = APP_CLOSE;
-      label = 'until the FCPS application window closes (Oct 30)';
-    } else {
-      target = TEST_DAY;
-      label = 'until the TJ writing test (Sat, Jan 9)';
+    function tick() {
+      var now = new Date();
+      var target, label;
+      if (now < APP_CLOSE) {
+        target = APP_CLOSE;
+        label = 'until the FCPS application window closes (Oct 30)';
+      } else {
+        target = TEST_DAY;
+        label = 'until the TJ writing test (Sat, Jan 9)';
+      }
+      var ms = target - now;
+      if (ms < 0) ms = 0;
+      if (dEl) dEl.textContent = Math.floor(ms / 86400000);
+      if (hEl) hEl.textContent = pad(Math.floor(ms % 86400000 / 3600000));
+      if (mEl) mEl.textContent = pad(Math.floor(ms % 3600000 / 60000));
+      if (cap) cap.textContent = label;
+      if (statDays) statDays.textContent = Math.max(0, Math.ceil((TEST_DAY - now) / 86400000));
     }
-    var ms = target - now;
-    if (ms < 0) ms = 0;
-    var days = Math.floor(ms / 86400000);
-    var hrs  = Math.floor(ms % 86400000 / 3600000);
-    var mins = Math.floor(ms % 3600000 / 60000);
-    if (dEl) dEl.textContent = days;
-    if (hEl) hEl.textContent = pad(hrs);
-    if (mEl) mEl.textContent = pad(mins);
-    if (cap) cap.textContent = label;
-
-    if (statDays) {
-      var td = Math.max(0, Math.ceil((TEST_DAY - now) / 86400000));
-      statDays.textContent = td;
-    }
+    tick();
+    setInterval(tick, 30000);
   }
-  tick();
-  setInterval(tick, 30000);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', startCountdown);
+  } else { startCountdown(); }
 })();
 
 /* ==========================================================
    2. 1-ON-1 BOOKING CALENDAR
    ----------------------------------------------------------
-   No backend: picking a slot fills in a request you send via
-   the Google Form. Availability below is a simple rule set —
-   edit AVAILABILITY to change which days/times are offered.
+   The calendar draws IMMEDIATELY. The Google Sheet is read
+   afterwards in the background; if it is slow or unreachable
+   the calendar still works, it just shows every slot as open.
    ========================================================== */
 (function () {
-  // ---- Fallback form (used if PREFILL_URL below is left blank) ----
+
+  /* ---------- SETTINGS: the only lines you normally edit ---------- */
+
+  // Plain link to the booking form (used if PREFILL_URL is blank).
   var FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSeh7AE9TOuuLi6tPkFYBkzpCpIMNILPJJlLLibqupxkQJgJAA/viewform';
 
-  /* ==========================================================
-     PREFILL_URL — paste ONE link here and the form arrives
-     with the date and time already filled in.
-
-     How to get it (about two minutes):
-       1. Make a Google Form for 1-on-1 bookings with two
-          questions: "Session requested" (short answer) and
-          "Your email" (short answer).
-       2. In the form editor: ⋮ menu → "Get pre-filled link".
-       3. In the "Session requested" box, type exactly:  SESSION
-          Leave the email box empty. Click "Get link" → "COPY LINK".
-       4. Paste that whole URL between the quotes below.
-
-     The script swaps SESSION for whatever the visitor picked.
-     Leave it as '' and the button just opens FORM_URL instead.
-     ========================================================== */
+  // Pre-filled link. Get it from the form: ⋮ → "Get pre-filled link",
+  // type SESSION in the session question, copy the link, paste it here.
   var PREFILL_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSeh7AE9TOuuLi6tPkFYBkzpCpIMNILPJJlLLibqupxkQJgJAA/viewform?usp=pp_url&entry.389963067=SESSION';
 
-  /* ==========================================================
-     BOOKED_CSV — makes taken slots disappear automatically.
-
-     Your booking form already writes every response into a
-     Google Sheet. We publish ONLY the session column so this
-     page can read which slots are gone.
-
-       1. Open the form's responses spreadsheet.
-       2. Add a new tab. Name it: Booked
-       3. In cell A1 of that tab put (adjust the tab name and
-          column letter to match where "Session requested" lands):
-              ={'Form Responses 1'!B2:B}
-       4. File → Share → Publish to web
-          → choose the "Booked" sheet, format "Comma-separated values"
-          → Publish, then copy the link.
-       5. Paste that link between the quotes below.
-
-     ⚠️ Publish the Booked tab ONLY — never the whole spreadsheet.
-     The responses tab holds people's email addresses, and
-     publishing it would put them on the open internet.
-
-     Leave '' and every slot simply shows as available.
-     ========================================================== */
+  // Published CSV of the "Booked" tab. Publish that tab ONLY — never the
+  // responses tab, which contains people's email addresses.
   var BOOKED_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQfR_7ZINU5E5AjpRL1nU_zLLp3nUw8JNt69xvTfKHS3klFEI7CLlaVtH6h4ce5Am38Ywa-yyhsKwyV/pub?gid=1660164360&single=true&output=csv';
 
-  // Slots you booked yourself (phone, email, whatever). Same wording
-  // the page shows, e.g. 'Saturday, September 12, 9:00 - 10:00 AM ET'
+  // Slots you booked yourself, outside the form. Copy the wording exactly
+  // as the page shows it, e.g. 'Saturday, September 12, 9:00 - 10:00 AM ET'
   var BOOKED_MANUAL = [];
 
-  var RATE = 30;
-  var BOOK_AHEAD_DAYS = 60;   // how far out people may book
+  var RATE = 30;              // dollars per hour
+  var BOOK_AHEAD_DAYS = 60;   // how far ahead people may book
   var MIN_NOTICE_DAYS = 1;    // no same-day bookings
+  var FETCH_TIMEOUT_MS = 8000;
 
-  // 0 = Sunday … 6 = Saturday. Empty array = unavailable that day.
-  // Each entry is one 1-hour session, written exactly as it should display.
+  // 0 = Sunday … 6 = Saturday. Empty array = closed that day.
   var WEEKNIGHT = ['5:30 – 6:30 PM', '7:30 – 8:30 PM'];
   var AVAILABILITY = {
     0: [],                                    // Sun — closed
@@ -1143,548 +1109,263 @@
     6: ['9:00 – 10:00 AM', '10:00 – 11:00 AM', '11:00 AM – 12:00 PM']  // Sat
   };
 
+  /* ---------- nothing below here needs editing ---------- */
+
   var MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
   var DAYNAMES = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 
-  var grid = document.getElementById('calGrid');
-  if (!grid) return;
-  var monthLabel = document.getElementById('calMonth');
-  var prevBtn = document.getElementById('calPrev');
-  var nextBtn = document.getElementById('calNext');
-  var slotsEl = document.getElementById('slots');
-  var slotTitle = document.getElementById('slotTitle');
-  var slotHint = document.getElementById('slotHint');
-  var picked = document.getElementById('picked');
-  var pickedVal = document.getElementById('pickedVal');
-  var pickedGo = document.getElementById('pickedGo');
-  var pickedCopy = document.getElementById('pickedCopy');
+  function boot() {
+    var grid = document.getElementById('calGrid');
+    if (!grid) { console.warn('[booking] calendar markup not found on this page'); return; }
 
-  var today = new Date(); today.setHours(0,0,0,0);
-  var minDate = new Date(today); minDate.setDate(minDate.getDate() + MIN_NOTICE_DAYS);
-  var maxDate = new Date(today); maxDate.setDate(maxDate.getDate() + BOOK_AHEAD_DAYS);
+    var monthLabel = document.getElementById('calMonth');
+    var prevBtn    = document.getElementById('calPrev');
+    var nextBtn    = document.getElementById('calNext');
+    var slotsEl    = document.getElementById('slots');
+    var slotTitle  = document.getElementById('slotTitle');
+    var slotHint   = document.getElementById('slotHint');
+    var picked     = document.getElementById('picked');
+    var pickedVal  = document.getElementById('pickedVal');
+    var pickedGo   = document.getElementById('pickedGo');
+    var pickedCopy = document.getElementById('pickedCopy');
 
-  var view = new Date(today.getFullYear(), today.getMonth(), 1);
-  var selDate = null, selTime = null;
+    var today = new Date(); today.setHours(0,0,0,0);
+    var minDate = new Date(today); minDate.setDate(minDate.getDate() + MIN_NOTICE_DAYS);
+    var maxDate = new Date(today); maxDate.setDate(maxDate.getDate() + BOOK_AHEAD_DAYS);
 
-  var BOOKED = {};   // normalised key -> true
+    var view = new Date(today.getFullYear(), today.getMonth(), 1);
+    var selDate = null, selTime = null;
+    var BOOKED = {};
 
-  function norm(v) {
-    return String(v).replace(/[\u2013\u2014]/g, '-').replace(/\s+/g, ' ').trim().toLowerCase();
-  }
-  function slotKey(d, t) { return norm(fmtDate(d) + ', ' + t + ' ET'); }
-  function isBooked(d, t) { return BOOKED[slotKey(d, t)] === true; }
-  function dayFull(d) {
-    var list = AVAILABILITY[d.getDay()] || [];
-    if (!list.length) return false;
-    for (var i = 0; i < list.length; i++) { if (!isBooked(d, list[i])) return false; }
-    return true;
-  }
+    function norm(v) {
+      return String(v).replace(/[–—]/g, '-').replace(/\s+/g, ' ').trim().toLowerCase();
+    }
+    function fmtDate(d) {
+      return DAYNAMES[d.getDay()] + ', ' + MONTHS[d.getMonth()] + ' ' + d.getDate();
+    }
+    function slotKey(d, t) { return norm(fmtDate(d) + ', ' + t + ' ET'); }
+    function isBooked(d, t) { return BOOKED[slotKey(d, t)] === true; }
+    function dayFull(d) {
+      var list = AVAILABILITY[d.getDay()] || [];
+      if (!list.length) return false;
+      for (var i = 0; i < list.length; i++) { if (!isBooked(d, list[i])) return false; }
+      return true;
+    }
+    function sameDay(a, b) {
+      return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+    }
+    function bookable(d) {
+      if (d < minDate || d > maxDate) return false;
+      if (!(AVAILABILITY[d.getDay()] || []).length) return false;
+      return !dayFull(d);
+    }
 
-  // first field of a CSV row, handling quoted values that contain commas
-  function firstField(line) {
-    line = line.replace(/\r$/, '');
-    if (!line) return '';
-    if (line.charAt(0) === '"') {
-      var out = '', i = 1;
-      while (i < line.length) {
-        if (line.charAt(i) === '"') {
-          if (line.charAt(i + 1) === '"') { out += '"'; i += 2; continue; }
-          break;
-        }
-        out += line.charAt(i); i++;
+    function setStatus(live, text) {
+      var box = document.getElementById('availStatus');
+      var txt = document.getElementById('availText');
+      if (!box || !txt) return;
+      box.classList.toggle('live', !!live);
+      txt.textContent = text;
+    }
+
+    /* ---------- calendar drawing ---------- */
+    function render() {
+      monthLabel.textContent = MONTHS[view.getMonth()] + ' ' + view.getFullYear();
+      grid.innerHTML = '';
+
+      var firstDow = new Date(view.getFullYear(), view.getMonth(), 1).getDay();
+      var daysInMonth = new Date(view.getFullYear(), view.getMonth() + 1, 0).getDate();
+
+      for (var i = 0; i < firstDow; i++) {
+        var blank = document.createElement('div');
+        blank.className = 'cal-day is-empty';
+        grid.appendChild(blank);
       }
+
+      for (var day = 1; day <= daysInMonth; day++) {
+        var d = new Date(view.getFullYear(), view.getMonth(), day);
+        var cell = document.createElement('button');
+        cell.type = 'button';
+        cell.className = 'cal-day';
+        cell.textContent = day;
+
+        if (!bookable(d)) {
+          cell.classList.add('is-off');
+          cell.disabled = true;
+          cell.setAttribute('aria-label', fmtDate(d) + ' — unavailable');
+        } else {
+          var pip = document.createElement('span');
+          pip.className = 'pipdot';
+          cell.appendChild(pip);
+          cell.setAttribute('aria-label', fmtDate(d) + ' — available');
+          (function (dd) {
+            cell.addEventListener('click', function () { selectDate(dd); });
+          })(d);
+        }
+        if (sameDay(d, today)) cell.classList.add('is-today');
+        if (selDate && sameDay(d, selDate)) cell.classList.add('is-sel');
+        grid.appendChild(cell);
+      }
+
+      prevBtn.disabled = new Date(view.getFullYear(), view.getMonth(), 1) <= new Date(today.getFullYear(), today.getMonth(), 1);
+      nextBtn.disabled = new Date(view.getFullYear(), view.getMonth() + 1, 0) >= maxDate;
+    }
+
+    function selectDate(d) {
+      selDate = d; selTime = null;
+      picked.hidden = true;
+      slotTitle.textContent = fmtDate(d);
+      slotHint.textContent = 'Each session runs one hour.';
+      slotsEl.innerHTML = '';
+      (AVAILABILITY[d.getDay()] || []).forEach(function (t) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.textContent = t;
+        if (isBooked(d, t)) {
+          b.className = 'slot taken';
+          b.disabled = true;
+          b.title = 'Already booked';
+        } else {
+          b.className = 'slot';
+          b.addEventListener('click', function () {
+            selTime = t;
+            Array.prototype.forEach.call(slotsEl.children, function (c) { c.classList.remove('sel'); });
+            b.classList.add('sel');
+            showPicked();
+          });
+        }
+        slotsEl.appendChild(b);
+      });
+      render();
+    }
+
+    function sessionText() { return fmtDate(selDate) + ', ' + selTime + ' ET'; }
+    function detailText()  { return '1-on-1 tutoring request — ' + sessionText() + ' (1 hour, $' + RATE + ')'; }
+    function formLink() {
+      if (!PREFILL_URL) return FORM_URL;
+      return PREFILL_URL.replace(/SESSION/g, encodeURIComponent(sessionText()));
+    }
+    function showPicked() {
+      pickedVal.textContent = sessionText();
+      pickedGo.href = formLink();
+      picked.hidden = false;
+      picked.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    pickedCopy.addEventListener('click', function () {
+      var txt = detailText();
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(txt).then(function () {
+          var old = pickedCopy.textContent;
+          pickedCopy.textContent = 'Copied ✓';
+          setTimeout(function () { pickedCopy.textContent = old; }, 1800);
+        }, function () { window.prompt('Copy this:', txt); });
+      } else {
+        window.prompt('Copy this:', txt);
+      }
+    });
+
+    prevBtn.addEventListener('click', function () { view.setMonth(view.getMonth() - 1); render(); });
+    nextBtn.addEventListener('click', function () { view.setMonth(view.getMonth() + 1); render(); });
+
+    /* ---------- booked slots, loaded AFTER the calendar is drawn ---------- */
+    function parseRow(line) {
+      line = line.replace(/\r$/, '');
+      var out = [], cur = '', inQ = false, i = 0;
+      while (i < line.length) {
+        var c = line.charAt(i);
+        if (inQ) {
+          if (c === '"') {
+            if (line.charAt(i + 1) === '"') { cur += '"'; i += 2; continue; }
+            inQ = false; i++; continue;
+          }
+          cur += c; i++;
+        } else {
+          if (c === '"') { inQ = true; i++; continue; }
+          if (c === ',') { out.push(cur); cur = ''; i++; continue; }
+          cur += c; i++;
+        }
+      }
+      out.push(cur);
       return out;
     }
-    return line.split(',')[0];
-  }
-
-  function setStatus(live, text) {
-    var box = document.getElementById('availStatus');
-    var txt = document.getElementById('availText');
-    if (!box || !txt) return;
-    box.classList.toggle('live', !!live);
-    txt.textContent = text;
-  }
-
-  // A "Publish to web" link copied from the HTML view won't parse as CSV.
-  // Repair it rather than silently failing.
-  function csvUrl(u) {
-    if (!u) return '';
-    u = u.replace('/pubhtml', '/pub');
-    if (u.indexOf('output=csv') === -1) u += (u.indexOf('?') > -1 ? '&' : '?') + 'output=csv';
-    return u;
-  }
-
-  function loadBooked() {
-    BOOKED = {};
-    for (var i = 0; i < BOOKED_MANUAL.length; i++) BOOKED[norm(BOOKED_MANUAL[i])] = true;
-
-    if (!BOOKED_CSV) {
-      setStatus(false, 'Showing all times');
-      render();
-      return;
+    function looksLikeSession(v) { return /\d/.test(v) && /(am|pm)/i.test(v); }
+    function csvUrl(u) {
+      if (!u) return '';
+      u = u.replace('/pubhtml', '/pub');
+      if (u.indexOf('output=csv') === -1) u += (u.indexOf('?') > -1 ? '&' : '?') + 'output=csv';
+      return u;
     }
-    var url = csvUrl(BOOKED_CSV) + '&cb=' + Date.now();
-    fetch(url, { cache: 'no-store' })
-      .then(function (r) { if (!r.ok) throw new Error('http ' + r.status); return r.text(); })
-      .then(function (txt) {
-        var rows = txt.split('\n'), n = 0;
-        for (var i = 0; i < rows.length; i++) {
-          var v = firstField(rows[i]);
-          if (!v) continue;
-          var k = norm(v);
-          if (k === 'session requested' || k === 'timestamp') continue;  // header row
-          if (!BOOKED[k]) { BOOKED[k] = true; n++; }
-        }
-        setStatus(true, 'Live availability · ' + n + ' slot' + (n === 1 ? '' : 's') + ' taken');
-        render();
-      })
-      .catch(function () {
+
+    function loadBooked() {
+      var base = {};
+      for (var i = 0; i < BOOKED_MANUAL.length; i++) base[norm(BOOKED_MANUAL[i])] = true;
+
+      if (!BOOKED_CSV) {
+        BOOKED = base;
         setStatus(false, 'Showing all times');
         render();
-      });
-  }
-
-  function sameDay(a, b) {
-    return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
-  }
-  function bookable(d) {
-    if (d < minDate || d > maxDate) return false;
-    if (!(AVAILABILITY[d.getDay()] || []).length) return false;
-    return !dayFull(d);
-  }
-
-  function render() {
-    monthLabel.textContent = MONTHS[view.getMonth()] + ' ' + view.getFullYear();
-    grid.innerHTML = '';
-
-    var firstDow = new Date(view.getFullYear(), view.getMonth(), 1).getDay();
-    var daysInMonth = new Date(view.getFullYear(), view.getMonth() + 1, 0).getDate();
-
-    for (var i = 0; i < firstDow; i++) {
-      var blank = document.createElement('div');
-      blank.className = 'cal-day is-empty';
-      grid.appendChild(blank);
-    }
-
-    for (var day = 1; day <= daysInMonth; day++) {
-      var d = new Date(view.getFullYear(), view.getMonth(), day);
-      var cell = document.createElement('button');
-      cell.type = 'button';
-      cell.className = 'cal-day';
-      cell.textContent = day;
-
-      if (!bookable(d)) {
-        cell.classList.add('is-off');
-        cell.disabled = true;
-        cell.setAttribute('aria-label', DAYNAMES[d.getDay()] + ' ' + MONTHS[d.getMonth()] + ' ' + day + ' — unavailable');
-      } else {
-        var pip = document.createElement('span');
-        pip.className = 'pipdot';
-        cell.appendChild(pip);
-        cell.setAttribute('aria-label', DAYNAMES[d.getDay()] + ' ' + MONTHS[d.getMonth()] + ' ' + day + ' — available');
-        (function (dd) {
-          cell.addEventListener('click', function () { selectDate(dd); });
-        })(d);
+        return;
       }
-      if (sameDay(d, today)) cell.classList.add('is-today');
-      if (selDate && sameDay(d, selDate)) cell.classList.add('is-sel');
-      grid.appendChild(cell);
-    }
 
-    var firstOfView = new Date(view.getFullYear(), view.getMonth(), 1);
-    prevBtn.disabled = firstOfView <= new Date(today.getFullYear(), today.getMonth(), 1);
-    var lastOfView = new Date(view.getFullYear(), view.getMonth() + 1, 0);
-    nextBtn.disabled = lastOfView >= maxDate;
-  }
+      var done = false;
+      var timer = setTimeout(function () {
+        if (done) return;
+        done = true;
+        console.warn('[booking] sheet took too long — showing all times');
+        BOOKED = base;
+        setStatus(false, 'Couldn’t reach the sheet — showing all times');
+        render();
+      }, FETCH_TIMEOUT_MS);
 
-  function fmtDate(d) {
-    return DAYNAMES[d.getDay()] + ', ' + MONTHS[d.getMonth()] + ' ' + d.getDate();
-  }
-
-  function selectDate(d) {
-    selDate = d; selTime = null;
-    picked.hidden = true;
-    slotTitle.textContent = fmtDate(d);
-    slotHint.textContent = 'Each session runs one hour.';
-    slotsEl.innerHTML = '';
-    (AVAILABILITY[d.getDay()] || []).forEach(function (t) {
-      var b = document.createElement('button');
-      b.type = 'button';
-      b.textContent = t;
-      if (isBooked(d, t)) {
-        b.className = 'slot taken';
-        b.disabled = true;
-        b.title = 'Already booked';
-        b.setAttribute('aria-label', t + ' — already booked');
-      } else {
-        b.className = 'slot';
-        b.addEventListener('click', function () {
-          selTime = t;
-          Array.prototype.forEach.call(slotsEl.children, function (c) { c.classList.remove('sel'); });
-          b.classList.add('sel');
-          showPicked();
-        });
-      }
-      slotsEl.appendChild(b);
-    });
-    render();
-  }
-
-  function sessionText() {
-    return fmtDate(selDate) + ', ' + selTime + ' ET';
-  }
-  function detailText() {
-    return '1-on-1 tutoring request — ' + sessionText() + ' (1 hour, $' + RATE + ')';
-  }
-  function formLink() {
-    if (!PREFILL_URL) return FORM_URL;
-    // Google encodes the sample answer in the link; swap it for the real pick.
-    return PREFILL_URL.replace(/SESSION/g, encodeURIComponent(sessionText()));
-  }
-
-  function showPicked() {
-    pickedVal.textContent = sessionText();
-    pickedGo.href = formLink();
-    picked.hidden = false;
-    picked.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }
-
-  pickedCopy.addEventListener('click', function () {
-    var txt = detailText();
-    var done = function () {
-      var old = pickedCopy.textContent;
-      pickedCopy.textContent = 'Copied ✓';
-      setTimeout(function () { pickedCopy.textContent = old; }, 1800);
-    };
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(txt).then(done, function () { window.prompt('Copy this:', txt); });
-    } else {
-      window.prompt('Copy this:', txt);
-    }
-  });
-
-  prevBtn.addEventListener('click', function () { view.setMonth(view.getMonth() - 1); render(); });
-  nextBtn.addEventListener('click', function () { view.setMonth(view.getMonth() + 1); render(); });
-
-  loadBooked();
-  // re-check when someone comes back to the tab after filling the form
-  document.addEventListener('visibilitychange', function () {
-    if (!document.hidden) loadBooked();
-  });
-})();
-<script>
-/* ==========================================================
-   1. COUNTDOWN — application deadline, then test day
-   ========================================================== */
-(function () {
-  var APP_CLOSE = new Date(2026, 9, 30, 16, 0, 0);   // Oct 30, 2026, 4:00 PM
-  var TEST_DAY  = new Date(2027, 0, 9, 8, 0, 0);     // Jan 9, 2027, 8:00 AM
-
-  var dEl = document.getElementById('cdD'),
-      hEl = document.getElementById('cdH'),
-      mEl = document.getElementById('cdM'),
-      cap = document.getElementById('cdCaption'),
-      statDays = document.getElementById('statDays');
-
-  function pad(n) { return n < 10 ? '0' + n : '' + n; }
-
-  function tick() {
-    var now = new Date();
-    var target, label;
-    if (now < APP_CLOSE) {
-      target = APP_CLOSE;
-      label = 'until the FCPS application window closes (Oct 30)';
-    } else {
-      target = TEST_DAY;
-      label = 'until the TJ writing test (Sat, Jan 9)';
-    }
-    var ms = target - now;
-    if (ms < 0) ms = 0;
-    var days = Math.floor(ms / 86400000);
-    var hrs  = Math.floor(ms % 86400000 / 3600000);
-    var mins = Math.floor(ms % 3600000 / 60000);
-    if (dEl) dEl.textContent = days;
-    if (hEl) hEl.textContent = pad(hrs);
-    if (mEl) mEl.textContent = pad(mins);
-    if (cap) cap.textContent = label;
-
-    if (statDays) {
-      var td = Math.max(0, Math.ceil((TEST_DAY - now) / 86400000));
-      statDays.textContent = td;
-    }
-  }
-  tick();
-  setInterval(tick, 30000);
-})();
-
-/* ==========================================================
-   2. 1-ON-1 BOOKING CALENDAR
-   ========================================================== */
-(function () {
-  var FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSeh7AE9TOuuLi6tPkFYBkzpCpIMNILPJJlLLibqupxkQJgJAA/viewform';
-
-  var PREFILL_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSeh7AE9TOuuLi6tPkFYBkzpCpIMNILPJJlLLibqupxkQJgJAA/viewform?usp=pp_url&entry.389963067=SESSION';
-
-  var BOOKED_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQfR_7ZINU5E5AjpRL1nU_zLLp3nUw8JNt69xvTfKHS3klFEI7CLlaVtH6h4ce5Am38Ywa-yyhsKwyV/pub?gid=1660164360&single=true&output=csv';
-
-  var BOOKED_MANUAL = [];
-
-  var RATE = 30;
-  var BOOK_AHEAD_DAYS = 60;
-  var MIN_NOTICE_DAYS = 1;
-
-  var WEEKNIGHT = ['5:30 – 6:30 PM', '7:30 – 8:30 PM'];
-  var AVAILABILITY = {
-    0: [],                                    // Sun — closed
-    1: WEEKNIGHT,                             // Mon
-    2: WEEKNIGHT,                             // Tue
-    3: WEEKNIGHT,                             // Wed
-    4: WEEKNIGHT,                             // Thu
-    5: WEEKNIGHT,                             // Fri
-    6: ['9:00 – 10:00 AM', '10:00 – 11:00 AM', '11:00 AM – 12:00 PM']  // Sat
-  };
-
-  var MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-  var DAYNAMES = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-
-  var grid = document.getElementById('calGrid');
-  if (!grid) return;
-  var monthLabel = document.getElementById('calMonth');
-  var prevBtn = document.getElementById('calPrev');
-  var nextBtn = document.getElementById('calNext');
-  var slotsEl = document.getElementById('slots');
-  var slotTitle = document.getElementById('slotTitle');
-  var slotHint = document.getElementById('slotHint');
-  var picked = document.getElementById('picked');
-  var pickedVal = document.getElementById('pickedVal');
-  var pickedGo = document.getElementById('pickedGo');
-  var pickedCopy = document.getElementById('pickedCopy');
-
-  var today = new Date(); today.setHours(0,0,0,0);
-  var minDate = new Date(today); minDate.setDate(minDate.getDate() + MIN_NOTICE_DAYS);
-  var maxDate = new Date(today); maxDate.setDate(maxDate.getDate() + BOOK_AHEAD_DAYS);
-
-  var view = new Date(today.getFullYear(), today.getMonth(), 1);
-  var selDate = null, selTime = null;
-
-  var BOOKED = {};
-
-  function norm(v) {
-    return String(v).replace(/[\u2013\u2014]/g, '-').replace(/\s+/g, ' ').trim().toLowerCase();
-  }
-  function slotKey(d, t) { return norm(fmtDate(d) + ', ' + t + ' ET'); }
-  function isBooked(d, t) { return BOOKED[slotKey(d, t)] === true; }
-  function dayFull(d) {
-    var list = AVAILABILITY[d.getDay()] || [];
-    if (!list.length) return false;
-    for (var i = 0; i < list.length; i++) { if (!isBooked(d, list[i])) return false; }
-    return true;
-  }
-
-  function parseRow(line) {
-    line = line.replace(/\r$/, '');
-    var out = [], cur = '', inQ = false, i = 0;
-    while (i < line.length) {
-      var c = line.charAt(i);
-      if (inQ) {
-        if (c === '"') {
-          if (line.charAt(i + 1) === '"') { cur += '"'; i += 2; continue; }
-          inQ = false; i++; continue;
-        }
-        cur += c; i++;
-      } else {
-        if (c === '"') { inQ = true; i++; continue; }
-        if (c === ',') { out.push(cur); cur = ''; i++; continue; }
-        cur += c; i++;
-      }
-    }
-    out.push(cur);
-    return out;
-  }
-
-  function looksLikeSession(v) {
-    return /\d/.test(v) && /(am|pm)/i.test(v);
-  }
-
-  function setStatus(live, text) {
-    var box = document.getElementById('availStatus');
-    var txt = document.getElementById('availText');
-    if (!box || !txt) return;
-    box.classList.toggle('live', !!live);
-    txt.textContent = text;
-  }
-
-  function csvUrl(u) {
-    if (!u) return '';
-    u = u.replace('/pubhtml', '/pub');
-    if (u.indexOf('output=csv') === -1) u += (u.indexOf('?') > -1 ? '&' : '?') + 'output=csv';
-    return u;
-  }
-
-  function loadBooked() {
-    BOOKED = {};
-    for (var i = 0; i < BOOKED_MANUAL.length; i++) BOOKED[norm(BOOKED_MANUAL[i])] = true;
-
-    if (!BOOKED_CSV) {
-      setStatus(false, 'Showing all times');
-      render();
-      return;
-    }
-    var url = csvUrl(BOOKED_CSV) + '&cb=' + Date.now();
-    fetch(url, { cache: 'no-store' })
-      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); })
-      .then(function (txt) {
-        if (/^\s*</.test(txt)) throw new Error('got HTML, not CSV — check the publish link uses output=csv');
-        var rows = txt.split('\n'), n = 0, seen = [];
-        for (var i = 0; i < rows.length; i++) {
-          var cells = parseRow(rows[i]);
-          for (var c = 0; c < cells.length; c++) {
-            var v = cells[c].trim();
-            if (!v || !looksLikeSession(v)) continue;
-            var k = norm(v);
-            if (!BOOKED[k]) { BOOKED[k] = true; n++; seen.push(v); }
+      fetch(csvUrl(BOOKED_CSV) + '&cb=' + Date.now(), { cache: 'no-store' })
+        .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); })
+        .then(function (txt) {
+          if (done) return;
+          done = true; clearTimeout(timer);
+          if (/^\s*</.test(txt)) throw new Error('got HTML, not CSV — the publish link needs output=csv');
+          var rows = txt.split('\n'), n = 0, seen = [];
+          for (var i = 0; i < rows.length; i++) {
+            var cells = parseRow(rows[i]);
+            for (var c = 0; c < cells.length; c++) {
+              var v = cells[c].trim();
+              if (!v || !looksLikeSession(v)) continue;
+              var k = norm(v);
+              if (!base[k]) { base[k] = true; n++; seen.push(v); }
+            }
           }
-        }
-        if (console && console.log) console.log('[booking] loaded ' + n + ' booked slot(s):', seen);
-        if (n === 0) {
-          setStatus(false, 'No bookings yet — all times open');
-        } else {
-          setStatus(true, 'Live availability · ' + n + ' slot' + (n === 1 ? '' : 's') + ' taken');
-        }
-        render();
-      })
-      .catch(function (e) {
-        if (console && console.warn) console.warn('[booking] could not read the sheet:', e && e.message);
-        setStatus(false, 'Couldn\u2019t reach the sheet — showing all times');
-        render();
-      });
-  }
-
-  function sameDay(a, b) {
-    return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
-  }
-  function bookable(d) {
-    if (d < minDate || d > maxDate) return false;
-    if (!(AVAILABILITY[d.getDay()] || []).length) return false;
-    return !dayFull(d);
-  }
-
-  function render() {
-    monthLabel.textContent = MONTHS[view.getMonth()] + ' ' + view.getFullYear();
-    grid.innerHTML = '';
-
-    var firstDow = new Date(view.getFullYear(), view.getMonth(), 1).getDay();
-    var daysInMonth = new Date(view.getFullYear(), view.getMonth() + 1, 0).getDate();
-
-    for (var i = 0; i < firstDow; i++) {
-      var blank = document.createElement('div');
-      blank.className = 'cal-day is-empty';
-      grid.appendChild(blank);
-    }
-
-    for (var day = 1; day <= daysInMonth; day++) {
-      var d = new Date(view.getFullYear(), view.getMonth(), day);
-      var cell = document.createElement('button');
-      cell.type = 'button';
-      cell.className = 'cal-day';
-      cell.textContent = day;
-
-      if (!bookable(d)) {
-        cell.classList.add('is-off');
-        cell.disabled = true;
-        cell.setAttribute('aria-label', DAYNAMES[d.getDay()] + ' ' + MONTHS[d.getMonth()] + ' ' + day + ' — unavailable');
-      } else {
-        var pip = document.createElement('span');
-        pip.className = 'pipdot';
-        cell.appendChild(pip);
-        cell.setAttribute('aria-label', DAYNAMES[d.getDay()] + ' ' + MONTHS[d.getMonth()] + ' ' + day + ' — available');
-        (function (dd) {
-          cell.addEventListener('click', function () { selectDate(dd); });
-        })(d);
-      }
-      if (sameDay(d, today)) cell.classList.add('is-today');
-      if (selDate && sameDay(d, selDate)) cell.classList.add('is-sel');
-      grid.appendChild(cell);
-    }
-
-    var firstOfView = new Date(view.getFullYear(), view.getMonth(), 1);
-    prevBtn.disabled = firstOfView <= new Date(today.getFullYear(), today.getMonth(), 1);
-    var lastOfView = new Date(view.getFullYear(), view.getMonth() + 1, 0);
-    nextBtn.disabled = lastOfView >= maxDate;
-  }
-
-  function fmtDate(d) {
-    return DAYNAMES[d.getDay()] + ', ' + MONTHS[d.getMonth()] + ' ' + d.getDate();
-  }
-
-  function selectDate(d) {
-    selDate = d; selTime = null;
-    picked.hidden = true;
-    slotTitle.textContent = fmtDate(d);
-    slotHint.textContent = 'Each session runs one hour.';
-    slotsEl.innerHTML = '';
-    (AVAILABILITY[d.getDay()] || []).forEach(function (t) {
-      var b = document.createElement('button');
-      b.type = 'button';
-      b.textContent = t;
-      if (isBooked(d, t)) {
-        b.className = 'slot taken';
-        b.disabled = true;
-        b.title = 'Already booked';
-        b.setAttribute('aria-label', t + ' — already booked');
-      } else {
-        b.className = 'slot';
-        b.addEventListener('click', function () {
-          selTime = t;
-          Array.prototype.forEach.call(slotsEl.children, function (c) { c.classList.remove('sel'); });
-          b.classList.add('sel');
-          showPicked();
+          BOOKED = base;
+          console.log('[booking] loaded ' + n + ' booked slot(s):', seen);
+          setStatus(n > 0, n > 0
+            ? 'Live availability · ' + n + ' slot' + (n === 1 ? '' : 's') + ' taken'
+            : 'No bookings yet — all times open');
+          render();
+        })
+        .catch(function (e) {
+          if (done) return;
+          done = true; clearTimeout(timer);
+          console.warn('[booking] could not read the sheet:', e && e.message);
+          BOOKED = base;
+          setStatus(false, 'Couldn’t reach the sheet — showing all times');
+          render();
         });
-      }
-      slotsEl.appendChild(b);
-    });
-    render();
-  }
-
-  function sessionText() {
-    return fmtDate(selDate) + ', ' + selTime + ' ET';
-  }
-  function detailText() {
-    return '1-on-1 tutoring request — ' + sessionText() + ' (1 hour, $' + RATE + ')';
-  }
-  function formLink() {
-    if (!PREFILL_URL) return FORM_URL;
-    return PREFILL_URL.replace(/SESSION/g, encodeURIComponent(sessionText()));
-  }
-
-  function showPicked() {
-    pickedVal.textContent = sessionText();
-    pickedGo.href = formLink();
-    picked.hidden = false;
-    picked.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }
-
-  pickedCopy.addEventListener('click', function () {
-    var txt = detailText();
-    var done = function () {
-      var old = pickedCopy.textContent;
-      pickedCopy.textContent = 'Copied ✓';
-      setTimeout(function () { pickedCopy.textContent = old; }, 1800);
-    };
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(txt).then(done, function () { window.prompt('Copy this:', txt); });
-    } else {
-      window.prompt('Copy this:', txt);
     }
-  });
 
-  prevBtn.addEventListener('click', function () { view.setMonth(view.getMonth() - 1); render(); });
-  nextBtn.addEventListener('click', function () { view.setMonth(view.getMonth() + 1); render(); });
+    // Draw first. Always. Then go looking for booked slots.
+    render();
+    setStatus(false, 'Checking availability…');
+    loadBooked();
 
-  loadBooked();
-  document.addEventListener('visibilitychange', function () {
-    if (!document.hidden) loadBooked();
-  });
+    document.addEventListener('visibilitychange', function () {
+      if (!document.hidden) loadBooked();
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else { boot(); }
 })();
 </script>
+
+</body>
+</html>
